@@ -1,17 +1,17 @@
-import { NextPage } from 'next';
-import React from 'react';
-import styled from 'styled-components';
+import { NextPage } from "next";
+import React from "react";
+import styled from "styled-components";
 
-import { Tabs } from 'src/components/Tabs';
-import { MainLayout } from 'src/layouts/MainLayout';
-import { LoginForm } from 'src/components/LoginForm';
+import { Tabs } from "src/components/Tabs";
+import { MainLayout } from "src/layouts/MainLayout";
+import { SignInForm } from "src/components/SignInForm";
 
 const LoginPage: NextPage = ({}) => {
   return (
     <MainLayout title="Login">
       <Container>
         <Tabs step={2} />
-        <LoginForm />
+        <SignInForm />
       </Container>
     </MainLayout>
   );

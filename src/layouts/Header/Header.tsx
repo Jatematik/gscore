@@ -1,18 +1,22 @@
-import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
 
-import LogoIcon from 'src/assets/icons/LogoIcon';
-import SettingIcon from 'src/assets/icons/SetingIcon';
-import LogoutIcon from 'src/assets/icons/LogoutIcon';
-import ChevronIcon from 'src/assets/icons/ChevronIcon';
-import { DropDown } from 'src/components/DropDown';
-import { useOutside } from 'src/hooks/useOutside';
-import { ILink } from 'src/ui/ILink';
-import { routes } from 'src/types/routes';
+import LogoIcon from "src/assets/icons/LogoIcon";
+import SettingIcon from "src/assets/icons/SetingIcon";
+import LogoutIcon from "src/assets/icons/LogoutIcon";
+import ChevronIcon from "src/assets/icons/ChevronIcon";
+import { DropDown } from "src/components/DropDown";
+import { useOutside } from "src/hooks/useOutside";
+import { ILink } from "src/ui/ILink";
+import { routes } from "src/types/routes";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { actions, selectors } from "src/store/ducks";
 
 const Header: React.FC<HeaderProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectors.user.selectUser);
+  const token = useAppSelector(selectors.user.selectToken);
   const ref = useRef<HTMLDivElement>(null);
 
   const handleOpen = () => setOpen(!open);
@@ -24,37 +28,40 @@ const Header: React.FC<HeaderProps> = ({}) => {
       <ILink url="/">
         <LogoIcon />
       </ILink>
-      <UserContainer>
-        <div>
-          <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
-        </div>
-        <ContainerRelative ref={ref}>
-          <UserNameContainer onClick={handleOpen}>
-            <UserNameText>Ziba</UserNameText>
-            <ChevronIcon position={open ? 'top' : 'bottom'} />
-          </UserNameContainer>
-          {open && (
-            <DropDown
-              items={[
-                {
-                  id: 1,
-                  title: 'Settings',
-                  url: routes.SETTING,
-                  icon: <SettingIcon />,
-                },
-                {
-                  id: 2,
-                  title: 'Logout',
-                  icon: <LogoutIcon />,
-                  func: () => {
-                    console.log('click');
+      {token && (
+        <UserContainer>
+          <div>
+            <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
+          </div>
+          <ContainerRelative ref={ref}>
+            <UserNameContainer onClick={handleOpen}>
+              <UserNameText>{user.username}</UserNameText>
+              <ChevronIcon position={open ? "top" : "bottom"} />
+            </UserNameContainer>
+            {open && (
+              <DropDown
+                items={[
+                  {
+                    id: 1,
+                    title: "Settings",
+                    url: routes.SETTING,
+                    icon: <SettingIcon />,
                   },
-                },
-              ]}
-            />
-          )}
-        </ContainerRelative>
-      </UserContainer>
+                  {
+                    id: 2,
+                    title: "Logout",
+                    icon: <LogoutIcon />,
+                    func: () => {
+                      dispatch(actions.user.logOut());
+                      setOpen(false);
+                    },
+                  },
+                ]}
+              />
+            )}
+          </ContainerRelative>
+        </UserContainer>
+      )}
     </HeaderContainer>
   );
 };
