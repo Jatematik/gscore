@@ -1,22 +1,23 @@
 import { NextPage } from 'next';
+import React from 'react';
 import styled from 'styled-components';
 
-import { CreateAccountForm } from 'src/components/CreateAccountForm';
 import { Tabs } from 'src/components/Tabs';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { LoginForm } from 'src/components/LoginForm';
 
-const RegistrationPage: NextPage = () => {
+const LoginPage: NextPage = ({}) => {
   return (
-    <MainLayout title="Registration">
+    <MainLayout title="Login">
       <Container>
-        <Tabs step={1} />
-        <CreateAccountForm />
+        <Tabs step={2} />
+        <LoginForm />
       </Container>
     </MainLayout>
   );
 };
 
-export default RegistrationPage;
+export default LoginPage;
 
 const Container = styled.div`
   padding-top: 32px;

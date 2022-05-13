@@ -9,6 +9,7 @@ import ChevronIcon from 'src/assets/icons/ChevronIcon';
 import { DropDown } from 'src/components/DropDown';
 import { useOutside } from 'src/hooks/useOutside';
 import { ILink } from 'src/ui/ILink';
+import { routes } from 'src/types/routes';
 
 const Header: React.FC<HeaderProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
       </ILink>
       <UserContainer>
         <div>
-          <ILink url="/subscriptions">My subscriptions</ILink>
+          <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
         </div>
         <ContainerRelative ref={ref}>
           <UserNameContainer onClick={handleOpen}>
@@ -38,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
                 {
                   id: 1,
                   title: 'Settings',
-                  url: '/setting',
+                  url: routes.SETTING,
                   icon: <SettingIcon />,
                 },
                 {

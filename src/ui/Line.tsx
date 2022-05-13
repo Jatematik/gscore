@@ -14,7 +14,7 @@ interface LineProps {
 }
 
 const AppLine = styled.div<{ $CSS?: CSSProp }>`
-  margin: 40px 0%;
+  margin: 40px 0;
   height: 1px;
   background-color: ${colors.gray500};
   ${({ $CSS }) => $CSS}

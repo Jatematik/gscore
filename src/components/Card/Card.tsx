@@ -8,6 +8,7 @@ import MarkerIcon from 'src/assets/icons/MarkerIcon';
 import { ILink } from 'src/ui/ILink';
 import { IText } from 'src/ui/IText';
 import { ITitle } from 'src/ui/ITitle';
+import { routes } from 'src/types/routes';
 
 const Card: React.FC<CardProps> = ({ active }) => {
   const [activeColor, setActiveColor] = useState<string>('');
@@ -59,7 +60,7 @@ const Card: React.FC<CardProps> = ({ active }) => {
         </ListItem>
       </ListContainer>
       <ILink
-        url="/registration"
+        url={routes.REGISTRATION}
         containerStyles={[linkStyles, active ? `color: ${activeColor}` : {}]}
       >
         Get Gscore
