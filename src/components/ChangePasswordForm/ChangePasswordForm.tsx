@@ -1,26 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 
 import { AppInput } from "src/ui/AppInput";
 import { IButton } from "src/ui/IButton";
 import { ITitle } from "src/ui/ITitle";
+import { apiRequests } from "src/services/apiFunctions";
+import {
+  errorRequestMessage,
+  successRequestMessage,
+} from "src/services/toastFunctions";
+import { IToast } from "src/ui/IToast";
 
 const ChangePasswordForm: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
-    watch,
+    reset,
     formState: { isSubmitted },
   } = useForm<InputsType>({
     defaultValues: {
-      password: "",
+      currentPassword: "",
       newPassword: "",
     },
   });
 
   const onSubmit: SubmitHandler<InputsType> = (data) => {
-    console.log(data);
+    setLoading(true);
+    apiRequests.user
+      .updatePassword(data)
+      .then(() => successRequestMessage("Password changed successfully!"))
+      .catch((e) => errorRequestMessage(e.message))
+      .finally(() => {
+        setLoading(false);
+        reset();
+      });
   };
 
   return (
@@ -30,8 +45,9 @@ const ChangePasswordForm: React.FC = () => {
         <div>
           <Controller
             control={control}
-            name="password"
+            name="currentPassword"
             rules={{
+              required: "Password is required",
               minLength: {
                 message: "Password must be 6 characters",
                 value: 6,
@@ -52,7 +68,11 @@ const ChangePasswordForm: React.FC = () => {
             control={control}
             name="newPassword"
             rules={{
-              validate: (value) => value === watch("password"),
+              required: "Password is required",
+              minLength: {
+                message: "Password must be 6 characters",
+                value: 6,
+              },
             }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <AppInput
@@ -66,14 +86,17 @@ const ChangePasswordForm: React.FC = () => {
             )}
           />
         </div>
-        <IButton containerStyles={buttonStyles}>Save</IButton>
+        <IButton containerStyles={buttonStyles} loading={loading}>
+          Save
+        </IButton>
       </Container>
+      <IToast />
     </form>
   );
 };
 
 interface InputsType {
-  password: string;
+  currentPassword: string;
   newPassword: string;
 }
 

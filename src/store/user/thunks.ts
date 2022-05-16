@@ -35,7 +35,28 @@ const signUp = createAsyncThunk<
   }
 );
 
+const updatePersonalData = createAsyncThunk<
+  {
+    id: number;
+    email: string;
+    username: string;
+  },
+  { email: string; username: string }
+>(
+  "users/update",
+  async (data: { email: string; username: string }, { rejectWithValue }) => {
+    try {
+      const response = await apiRequests.user.updatePersonalData(data);
+
+      return response.data;
+    } catch (e: unknown | any) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
 export const userThunks = {
   signIn,
   signUp,
+  updatePersonalData,
 };

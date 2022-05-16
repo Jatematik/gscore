@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 
 import { ITitle } from "src/ui/ITitle";
 import { AppInput } from "src/ui/AppInput";
 import { IButton } from "src/ui/IButton";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { selectors, thunks } from "src/store/ducks";
+import { successRequestMessage } from "src/services/toastFunctions";
+import { IToast } from "src/ui/IToast";
 
 const PersonalInfoForm: React.FC = () => {
+  const loading = useAppSelector(selectors.user.selectLoading);
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isSubmitted },
   } = useForm<InputsType>({
     defaultValues: {
@@ -19,7 +26,12 @@ const PersonalInfoForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<InputsType> = (data) => {
-    console.log(data);
+    dispatch(thunks.user.updatePersonalData(data)).then((res) => {
+      if (res.type === "users/update/fulfilled") {
+        successRequestMessage("Data updated successfully");
+      }
+    });
+    reset();
   };
 
   return (
@@ -31,10 +43,7 @@ const PersonalInfoForm: React.FC = () => {
             control={control}
             name="username"
             rules={{
-              minLength: {
-                message: "Username must be 6 characters",
-                value: 6,
-              },
+              required: "Username is required",
             }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <AppInput
@@ -51,6 +60,7 @@ const PersonalInfoForm: React.FC = () => {
             control={control}
             name="email"
             rules={{
+              required: "Email is required",
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                 message: "Invalid email value",
@@ -68,8 +78,11 @@ const PersonalInfoForm: React.FC = () => {
             )}
           />
         </div>
-        <IButton containerStyles={buttonStyles}>Save</IButton>
+        <IButton containerStyles={buttonStyles} loading={loading === "pending"}>
+          Save
+        </IButton>
       </Container>
+      <IToast />
     </form>
   );
 };

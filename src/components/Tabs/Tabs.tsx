@@ -67,11 +67,13 @@ const Tab = styled.div<{ active: boolean }>`
 
 const titleStyles = css`
   line-height: 20px;
+  font-weight: 700;
   color: ${colors.black700};
 `;
 
 const activeTitleStyles = css`
   line-height: 20px;
+  font-weight: 700;
   color: ${colors.primary};
 `;
 

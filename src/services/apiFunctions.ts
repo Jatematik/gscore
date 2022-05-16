@@ -11,6 +11,12 @@ const user = {
       username: string;
       token: string;
     }>("/api/users/sign-up", data),
+
+  updatePassword: (data: { currentPassword: string; newPassword: string }) =>
+    httpClient.patch("/api/users/update-password", data),
+
+  updatePersonalData: (data: { email: string; username: string }) =>
+    httpClient.patch("/api/users", data),
 };
 
 export const apiRequests = {

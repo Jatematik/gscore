@@ -5,6 +5,6 @@ export interface UserState {
     email: string;
     username: string;
   };
-  loading?: "idle" | "pending" | "fullfiled" | "rejected";
+  loading?: "idle" | "pending" | "fulfilled" | "rejected";
   error?: string;
 }

@@ -33,14 +33,14 @@ const userSlice = createSlice({
           state.token = action.payload.token;
           state.user = action.payload.user;
           state.error = "";
-          state.loading = "fullfiled";
+          state.loading = "fulfilled";
         }
       )
       .addCase(
         userThunks.signIn.rejected,
         (state, action: PayloadAction<any | unknown>) => {
-          state.loading = "rejected";
           state.error = action.payload;
+          state.loading = "rejected";
         }
       )
       .addCase(userThunks.signUp.pending, (state) => {
@@ -59,12 +59,34 @@ const userSlice = createSlice({
           state.token = action.payload.token;
           state.user.email = action.payload.email;
           state.user.username = action.payload.username;
-          state.loading = "fullfiled";
+          state.loading = "fulfilled";
         }
       )
-      .addCase(userThunks.signUp.rejected, (state) => {
-        state.loading = "rejected";
-      });
+      .addCase(
+        userThunks.signUp.rejected,
+        (state, action: PayloadAction<any | unknown>) => {
+          state.error = action.payload;
+          state.loading = "rejected";
+        }
+      )
+      .addCase(userThunks.updatePersonalData.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(
+        userThunks.updatePersonalData.fulfilled,
+        (state, action: PayloadAction<{ email: string; username: string }>) => {
+          state.user.email = action.payload.email;
+          state.user.username = action.payload.username;
+          state.loading = "fulfilled";
+        }
+      )
+      .addCase(
+        userThunks.updatePersonalData.rejected,
+        (state, action: PayloadAction<any | unknown>) => {
+          state.error = action.payload;
+          state.loading = "rejected";
+        }
+      );
   },
 });
 
