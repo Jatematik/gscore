@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
                   {
                     id: 1,
                     title: "Settings",
-                    url: routes.SETTING,
+                    url: routes.SETTINGS,
                     icon: <SettingIcon />,
                   },
                   {

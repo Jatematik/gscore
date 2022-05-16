@@ -1,17 +1,17 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import styled, { css } from 'styled-components';
+import React, { Dispatch, SetStateAction } from "react";
+import styled, { css } from "styled-components";
 
-import { ITitle } from 'src/ui/ITitle';
-import { Accordion } from '../Accordion';
-import { Tabs } from '../Tabs';
-import { IText } from 'src/ui/IText';
-import { IButton } from 'src/ui/IButton';
+import { ITitle } from "src/ui/ITitle";
+import { Accordion } from "../Accordion";
+import { StepTabs } from "../StepTabs";
+import { IText } from "src/ui/IText";
+import { IButton } from "src/ui/IButton";
 
 const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
   const handlePayment = () => setPayment(true);
   return (
     <>
-      <Tabs step={3} />
+      <StepTabs step={3} />
       <Container>
         <ITitle as="h3" containerStyles={titleStyles}>
           Checkout

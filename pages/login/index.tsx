@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import React from "react";
 import styled from "styled-components";
 
-import { Tabs } from "src/components/Tabs";
+import { StepTabs } from "src/components/StepTabs";
 import { MainLayout } from "src/layouts/MainLayout";
 import { SignInForm } from "src/components/SignInForm";
 
@@ -10,7 +10,7 @@ const LoginPage: NextPage = ({}) => {
   return (
     <MainLayout title="Login">
       <Container>
-        <Tabs step={2} />
+        <StepTabs step={2} />
         <SignInForm />
       </Container>
     </MainLayout>

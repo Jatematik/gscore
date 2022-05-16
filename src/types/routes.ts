@@ -1,13 +1,13 @@
-const REGISTRATION = '/registration';
-const SUBSCRIPTIONS = '/subscriptions';
-const SETTING = '/setting';
-const LOGIN = '/login';
-const CHECKOUT = '/checkout';
+const REGISTRATION = "/registration";
+const SUBSCRIPTIONS = "/subscriptions";
+const SETTINGS = "/settings";
+const LOGIN = "/login";
+const CHECKOUT = "/checkout";
 
 export const routes = {
   REGISTRATION,
   SUBSCRIPTIONS,
-  SETTING,
+  SETTINGS,
   LOGIN,
   CHECKOUT,
 };

@@ -2,14 +2,14 @@ import { NextPage } from "next";
 import styled from "styled-components";
 
 import { SignUpForm } from "src/components/SignUpForm";
-import { Tabs } from "src/components/Tabs";
+import { StepTabs } from "src/components/StepTabs";
 import { MainLayout } from "src/layouts/MainLayout";
 
 const RegistrationPage: NextPage = () => {
   return (
     <MainLayout title="Registration">
       <Container>
-        <Tabs step={1} />
+        <StepTabs step={1} />
         <SignUpForm />
       </Container>
     </MainLayout>

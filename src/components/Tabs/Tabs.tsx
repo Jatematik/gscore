@@ -1,73 +1,84 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React, { ReactNode, useState } from "react";
+import styled, { css } from "styled-components";
 
-import { colors } from 'src/styles/colors';
-import { IText } from 'src/ui/IText';
-import { Line } from 'src/ui/Line';
-import { routes } from 'src/types/routes';
+import { colors } from "src/styles/colors";
+import { IText } from "src/ui/IText";
+import { Line } from "src/ui/Line";
 
-const tabs = [
-  {
-    id: 1,
-    title: 'Create account',
-  },
-  {
-    id: 2,
-    title: 'Log in',
-  },
-  {
-    id: 3,
-    title: 'Chekout',
-  },
-];
+const Tabs: React.FC<TabsProps> = ({ tabs }) => {
+  const [active, setActive] = useState<number>(0);
 
-const Tabs: React.FC<TabsProps> = ({ step }) => {
   return (
-    <Container>
-      {tabs.map((tab, i) => (
-        <TabWrapper key={tab.id.toString()}>
-          <IText containerStyles={textStyles}>{tab.title}</IText>
-          <Line
-            containerStyles={[lineStyles, i + 1 <= step ? activeLine : {}]}
-          />
-        </TabWrapper>
-      ))}
-    </Container>
+    <>
+      <Box>
+        {tabs.map((tab, i) => (
+          <Tab
+            key={`${tab.title}.${i}`}
+            onClick={() => {
+              setActive(i);
+            }}
+            active={active === i}
+          >
+            <IText
+              as="span"
+              containerStyles={active === i ? activeTitleStyles : titleStyles}
+            >
+              {tab.title}
+            </IText>
+          </Tab>
+        ))}
+        <Line containerStyles={lineStyles} />
+      </Box>
+      {tabs.map((tab, i) => {
+        return (
+          <div key={`${tab.title}.${i}`}>
+            {i === active ? tab.children : undefined}
+          </div>
+        );
+      })}
+    </>
   );
 };
 
 interface TabsProps {
-  step: number;
+  tabs: {
+    title: string;
+    children: ReactNode;
+  }[];
 }
 
-const Container = styled.div`
+export default Tabs;
+
+const Box = styled.div`
+  margin: 48px 0;
   display: flex;
-  justify-content: space-between;
 `;
 
-const TabWrapper = styled.div`
-  flex-grow: 1;
-  margin-right: 16px;
-  &:last-child {
-    margin-right: 0;
-  }
+const Tab = styled.div<{ active: boolean }>`
+  padding: 0px 24px 12px;
+  border-bottom: 2px solid ${colors.primary};
+  cursor: pointer;
+
+  ${({ active }) =>
+    active
+      ? `border-bottom: 2px solid ${colors.primary};`
+      : `border-bottom: 2px solid ${colors.black700};`}
 `;
 
-const textStyles = css`
-  margin-bottom: 20px;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 22px;
+const titleStyles = css`
+  line-height: 20px;
+  color: ${colors.black700};
+`;
+
+const activeTitleStyles = css`
+  line-height: 20px;
+  color: ${colors.primary};
 `;
 
 const lineStyles = css`
   margin: 0;
-  border: 4px solid ${colors.black700};
-  border-radius: 4px;
+  height: 2px;
+  background-color: ${colors.black700};
+  flex-grow: 1;
+  margin-top: auto;
 `;
-
-const activeLine = css`
-  border: 4px solid ${colors.primary};
-`;
-
-export default Tabs;
