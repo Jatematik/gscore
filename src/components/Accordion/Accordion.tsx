@@ -1,44 +1,37 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React, { ReactNode } from "react";
+import styled, { css, CSSProp } from "styled-components";
 
-import { colors } from 'src/styles/colors';
-import { Line } from 'src/ui/Line';
-import { IText } from 'src/ui/IText';
-import TrashIcon from 'src/assets/icons/TrashIcon';
+import { colors } from "src/styles/colors";
+import { Line } from "src/ui/Line";
 
-const Accordion: React.FC<AccordionProps> = ({}) => {
+const Accordion: React.FC<AccordionProps> = ({
+  header,
+  body,
+  containerStyles = {},
+}) => {
   return (
-    <Container>
-      <Wrapper>
-        <IText as="span" containerStyles={topTextStyles}>
-          Package name
-        </IText>
-        <IText as="span" containerStyles={topTextStyles}>
-          Price
-        </IText>
-      </Wrapper>
+    <Container $CSS={containerStyles}>
+      <Wrapper>{header}</Wrapper>
       <Line containerStyles={lineStyles} />
-      <Wrapper>
-        <IText as="span" containerStyles={bottomTextStyles}>
-          Single site license
-        </IText>
-        <IText as="span" containerStyles={bottomTextStyles}>
-          $77
-          <TrashIcon />
-        </IText>
-      </Wrapper>
+      <Wrapper>{body}</Wrapper>
     </Container>
   );
 };
 
-interface AccordionProps {}
+interface AccordionProps {
+  header: ReactNode;
+  body: ReactNode;
+  containerStyles?: CSSProp;
+}
 
 export default Accordion;
 
-const Container = styled.div`
+const Container = styled.div<{ $CSS?: CSSProp }>`
   padding: 48px 0;
   border-radius: 12px;
   background-color: ${colors.black27};
+
+  ${({ $CSS }) => $CSS}
 `;
 
 const Wrapper = styled.div`
@@ -48,26 +41,4 @@ const Wrapper = styled.div`
 
 const lineStyles = css`
   margin: 32px 0;
-`;
-
-const topTextStyles = css`
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 34px;
-  flex-basis: 85%;
-  &:last-child {
-    flex-basis: 15%;
-  }
-`;
-
-const bottomTextStyles = css`
-  font-size: 24px;
-  line-height: 38px;
-  flex-basis: 85%;
-  &:last-child {
-    flex-basis: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
 `;

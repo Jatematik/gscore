@@ -1,5 +1,8 @@
 import "src/styles/fonts.css";
 import "react-toastify/dist/ReactToastify.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import type { AppProps } from "next/app";
 import GlobalStyle from "src/styles/GlobalStyles";
 import { Provider } from "react-redux";

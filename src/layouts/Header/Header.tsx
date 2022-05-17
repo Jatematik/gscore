@@ -11,6 +11,7 @@ import { ILink } from "src/ui/ILink";
 import { routes } from "src/types/routes";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { actions, selectors } from "src/store/ducks";
+import Container from "../Container/Container";
 
 const Header: React.FC<HeaderProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -24,45 +25,47 @@ const Header: React.FC<HeaderProps> = ({}) => {
   useOutside(ref, () => setOpen(false));
 
   return (
-    <HeaderContainer>
-      <ILink url="/">
-        <LogoIcon />
-      </ILink>
-      {token && (
-        <UserContainer>
-          <div>
-            <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
-          </div>
-          <ContainerRelative ref={ref}>
-            <UserNameContainer onClick={handleOpen}>
-              <UserNameText>{user.username}</UserNameText>
-              <ChevronIcon position={open ? "top" : "bottom"} />
-            </UserNameContainer>
-            {open && (
-              <DropDown
-                items={[
-                  {
-                    id: 1,
-                    title: "Settings",
-                    url: routes.SETTINGS,
-                    icon: <SettingIcon />,
-                  },
-                  {
-                    id: 2,
-                    title: "Logout",
-                    icon: <LogoutIcon />,
-                    func: () => {
-                      dispatch(actions.user.logOut());
-                      setOpen(false);
+    <Container>
+      <HeaderContainer>
+        <ILink url="/">
+          <LogoIcon />
+        </ILink>
+        {token && (
+          <UserContainer>
+            <div>
+              <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
+            </div>
+            <ContainerRelative ref={ref}>
+              <UserNameContainer onClick={handleOpen}>
+                <UserNameText>{user.username}</UserNameText>
+                <ChevronIcon position={open ? "top" : "bottom"} />
+              </UserNameContainer>
+              {open && (
+                <DropDown
+                  items={[
+                    {
+                      id: 1,
+                      title: "Settings",
+                      url: routes.SETTINGS,
+                      icon: <SettingIcon />,
                     },
-                  },
-                ]}
-              />
-            )}
-          </ContainerRelative>
-        </UserContainer>
-      )}
-    </HeaderContainer>
+                    {
+                      id: 2,
+                      title: "Logout",
+                      icon: <LogoutIcon />,
+                      func: () => {
+                        dispatch(actions.user.logOut());
+                        setOpen(false);
+                      },
+                    },
+                  ]}
+                />
+              )}
+            </ContainerRelative>
+          </UserContainer>
+        )}
+      </HeaderContainer>
+    </Container>
   );
 };
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React from "react";
+import styled, { css } from "styled-components";
 
-import { ITitle } from 'src/ui/ITitle';
-import { Accordion } from '../Accordion';
-import { IText } from 'src/ui/IText';
-import { IButton } from 'src/ui/IButton';
-import { ILink } from 'src/ui/ILink';
-import { routes } from 'src/types/routes';
+import { ITitle } from "src/ui/ITitle";
+import { Accordion } from "../Accordion";
+import { IText } from "src/ui/IText";
+import { ILink } from "src/ui/ILink";
+import { routes } from "src/types/routes";
+import TrashIcon from "src/assets/icons/TrashIcon";
 
 const StartSubscription: React.FC<StartSubscriptionProps> = ({}) => {
   return (
@@ -18,7 +18,29 @@ const StartSubscription: React.FC<StartSubscriptionProps> = ({}) => {
         We have sent you a payment receipt by e-mail and a link to download the
         plugin with a license key.
       </IText>
-      <Accordion />
+      <Accordion
+        header={
+          <>
+            <IText as="span" containerStyles={headerStyles}>
+              Package name
+            </IText>
+            <IText as="span" containerStyles={headerStyles}>
+              Price
+            </IText>
+          </>
+        }
+        body={
+          <>
+            <IText as="span" containerStyles={bodyStyles}>
+              Single site license
+            </IText>
+            <IText as="span" containerStyles={bodyStyles}>
+              $77
+              <TrashIcon />
+            </IText>
+          </>
+        }
+      />
       <ILink url={routes.SUBSCRIPTIONS} isButton containerStyles={btnStyles}>
         Go to my subscriptions
       </ILink>
@@ -34,10 +56,26 @@ const Container = styled.div`
   padding: 64px 0;
 `;
 
-const Wrapper = styled.div`
-  margin: 24px 0 48px;
-  display: flex;
-  justify-content: space-between;
+const headerStyles = css`
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 34px;
+  flex-basis: 85%;
+  &:last-child {
+    flex-basis: 15%;
+  }
+`;
+
+const bodyStyles = css`
+  font-size: 24px;
+  line-height: 38px;
+  flex-basis: 85%;
+  &:last-child {
+    flex-basis: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;
 
 const titleStyles = css`

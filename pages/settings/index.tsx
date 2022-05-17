@@ -7,11 +7,12 @@ import { ITitle } from "src/ui/ITitle";
 import { Tabs } from "src/components/Tabs";
 import { PersonalInfoForm } from "src/components/PersonalInfoForm";
 import { ChangePasswordForm } from "src/components/ChangePasswordForm";
+import Container from "src/layouts/Container/Container";
 
 const SettingsPage: NextPage = () => {
   return (
     <MainLayout title="Gscore | Setting">
-      <Container>
+      <Container containerStyles={containerStyles}>
         <ITitle containerStyles={titleStyles}>Settings</ITitle>
         <Tabs
           tabs={[
@@ -32,7 +33,7 @@ const SettingsPage: NextPage = () => {
 
 export default SettingsPage;
 
-const Container = styled.div`
+const containerStyles = css`
   padding: 32px 0px;
 `;
 

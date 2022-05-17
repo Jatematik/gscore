@@ -1,10 +1,9 @@
-import Head from 'next/head';
-import React from 'react';
-import Container from 'src/layouts/Container/Container';
-import styled from 'styled-components';
+import Head from "next/head";
+import React from "react";
 
-import { Footer } from '../Footer';
-import { Header } from '../Header';
+import Container from "../Container/Container";
+import { Footer } from "../Footer";
+import { Header } from "../Header";
 
 const MainLayout: React.FC<MainLayoutProps> = ({ title, children }) => {
   return (
@@ -12,10 +11,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ title, children }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <Container>
-        <Header />
-        <main>{children}</main>
-      </Container>
+      <Header />
+      <main>{children}</main>
       <Footer />
     </>
   );

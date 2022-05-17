@@ -6,6 +6,7 @@ import { Accordion } from "../Accordion";
 import { StepTabs } from "../StepTabs";
 import { IText } from "src/ui/IText";
 import { IButton } from "src/ui/IButton";
+import TrashIcon from "src/assets/icons/TrashIcon";
 
 const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
   const handlePayment = () => setPayment(true);
@@ -16,7 +17,29 @@ const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
         <ITitle as="h3" containerStyles={titleStyles}>
           Checkout
         </ITitle>
-        <Accordion />
+        <Accordion
+          header={
+            <>
+              <IText as="span" containerStyles={headerStyles}>
+                Package name
+              </IText>
+              <IText as="span" containerStyles={headerStyles}>
+                Price
+              </IText>
+            </>
+          }
+          body={
+            <>
+              <IText as="span" containerStyles={bodyStyles}>
+                Single site license
+              </IText>
+              <IText as="span" containerStyles={bodyStyles}>
+                $77
+                <TrashIcon />
+              </IText>
+            </>
+          }
+        />
         <Wrapper>
           <IText as="span" containerStyles={textStyles}>
             Total
@@ -62,4 +85,26 @@ const textStyles = css`
 
 const btnStyles = css`
   min-width: 200px;
+`;
+
+const headerStyles = css`
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 34px;
+  flex-basis: 85%;
+  &:last-child {
+    flex-basis: 15%;
+  }
+`;
+
+const bodyStyles = css`
+  font-size: 24px;
+  line-height: 38px;
+  flex-basis: 85%;
+  &:last-child {
+    flex-basis: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;

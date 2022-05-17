@@ -1,15 +1,16 @@
 import { NextPage } from "next";
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { StepTabs } from "src/components/StepTabs";
 import { MainLayout } from "src/layouts/MainLayout";
 import { SignInForm } from "src/components/SignInForm";
+import Container from "src/layouts/Container/Container";
 
 const LoginPage: NextPage = ({}) => {
   return (
     <MainLayout title="Login">
-      <Container>
+      <Container containerStyles={containerStyles}>
         <StepTabs step={2} />
         <SignInForm />
       </Container>
@@ -19,8 +20,7 @@ const LoginPage: NextPage = ({}) => {
 
 export default LoginPage;
 
-const Container = styled.div`
+const containerStyles = css`
   padding-top: 32px;
   max-width: 620px;
-  margin: auto;
 `;
