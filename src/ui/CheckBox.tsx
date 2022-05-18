@@ -1,170 +1,115 @@
-import React, { HTMLAttributes } from "react";
+import React, { InputHTMLAttributes } from "react";
 import { colors } from "src/styles/colors";
-import styled, { css } from "styled-components";
+import styled, { css, CSSProp } from "styled-components";
+import { IText } from "./IText";
 
 export const CheckBox: React.FC<CheckBoxProps> = ({
   isChecked,
   label,
+  disabled,
+  containerStyles = {},
   ...props
 }): JSX.Element => {
   return (
-    <>
-      {/* <Container>
-          <InputCheckBox
-            type="checkbox"
-            id={label}
-            check={isChecked}
-            {...props}
-          />
-          <LabelRoot htmlFor={label} check={isChecked}>
-            {label}
-          </LabelRoot>
-        </Container> */}
-      <LabelRoot check={isChecked}>
-        <InputCheckBox type="checkbox" check={isChecked} {...props} />
-        <span>123</span>
-      </LabelRoot>
-    </>
+    <Container $CSS={containerStyles}>
+      <ILabel>
+        <CheckboxContainer>
+          <HiddenCheckbox type="checkbox" checked={isChecked} {...props} />
+          <StyledCheckbox checked={isChecked}>
+            <Icon viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12" />
+            </Icon>
+          </StyledCheckbox>
+        </CheckboxContainer>
+        {label && (
+          <IText as="span" containerStyles={labelTextStyles}>
+            Label Text
+          </IText>
+        )}
+      </ILabel>
+    </Container>
   );
 };
 
-interface CheckBoxProps extends HTMLAttributes<HTMLDivElement> {
+interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {
   isChecked: boolean;
   label?: string;
+  containerStyles?: CSSProp;
 }
 
-const Container = styled.div`
-  position: relative;
-`;
-
-const LabelRoot = styled.label<{ check?: boolean }>`
-  position: relative;
+const Container = styled.div<{ $CSS?: CSSProp }>`
   display: inline-block;
-  /* padding-left: 38px;
-  color: white; */
-  cursor: pointer;
-  &::before {
-    position: absolute;
-    content: "";
-    transition: 0.2s;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    background-color: ${colors.white};
-    border: 1px solid ${colors.gray400};
-    border-radius: 7px;
-    ${({ check }) =>
-      check &&
-      css`
-        background-color: ${colors.primary};
-        border: 1px solid ${colors.primary};
-      `}
-  }
-
-  &::after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 1px;
-    left: 11px;
-    width: 6px;
-    height: 13px;
-    ${({ check }) =>
-      check &&
-      css`
-        border: solid ${colors.white};
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-      `}
-  }
+  ${({ $CSS }) => $CSS}
 `;
 
-const InputCheckBox = styled.input<{ check: boolean }>`
+const ILabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const labelTextStyles = css`
+  margin-left: 8px;
+`;
+
+const CheckboxContainer = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+`;
+
+const Icon = styled.svg`
+  fill: none;
+  stroke: ${colors.white};
+  stroke-width: 2px;
+`;
+
+const HiddenCheckbox = styled.input`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
   position: absolute;
-  z-index: -1;
-  opacity: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const StyledCheckbox = styled.div<{ checked: boolean }>`
   width: 28px;
   height: 28px;
-  margin: 0;
-  margin-left: 1px;
-  &:focus + ${LabelRoot}::before {
+  background: ${({ checked }) => (checked ? colors.primary : colors.white)};
+  border: 1px solid
+    ${({ checked }) => (checked ? colors.primary : colors.gray400)};
+  border-radius: 7px;
+  transition: all 150ms;
+
+  ${HiddenCheckbox}:focus + & {
     box-shadow: 0 0 0 4px rgb(252 88 66 / 30%);
   }
 
-  &:hover + ${LabelRoot}::before {
-    ${({ check }) =>
-      check
-        ? css`
-            background-color: ${colors.red400};
-            border: 1px solid ${colors.red400};
-          `
-        : css`
-            background-color: ${colors.gray400};
-            border: 1px solid ${colors.gray400};
-          `}
+  /* ${HiddenCheckbox}:hover + & {
+    background: ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
+    border: 1px solid
+      ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
+  } */
+
+  ${HiddenCheckbox}:disabled + & {
+    opacity: 0.5;
+    background: ${({ checked }) => (checked ? colors.red400 : colors.white)};
+    border: 1px solid
+      ${({ checked }) => (checked ? colors.red400 : colors.white)};
   }
 
-  &:disabled + ${LabelRoot}::before {
-    ${({ check }) =>
-      check
-        ? css`
-            opacity: 0.5;
-            background-color: ${colors.red400};
-            border: 1px solid ${colors.red400};
-          `
-        : css`
-            opacity: 0.5;
-            background-color: ${colors.white};
-            border: 1px solid ${colors.white};
-          `}
+  ${HiddenCheckbox}:hover:disabled + & {
+    opacity: 0.5;
+    background: ${({ checked }) => (checked ? colors.red400 : colors.white)};
+    border: 1px solid
+      ${({ checked }) => (checked ? colors.red400 : colors.white)};
   }
-  &:hover:disabled + ${LabelRoot}::before {
-    ${({ check }) =>
-      check
-        ? css`
-            opacity: 0.5;
-            background-color: ${colors.red400};
-            border: 1px solid ${colors.red400};
-          `
-        : css`
-            opacity: 0.5;
-            background-color: ${colors.white};
-            border: 1px solid ${colors.white};
-          `}
+
+  ${Icon} {
+    visibility: ${({ checked }) => (checked ? "visible" : "hidden")};
   }
 `;
-
-// const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
-//   border: 0;
-//   clip: rect(0 0 0 0);
-//   clippath: inset(50%);
-//   height: 1px;
-//   margin: -1px;
-//   overflow: hidden;
-//   padding: 0;
-//   position: absolute;
-//   white-space: nowrap;
-//   width: 1px;
-// `;
-
-// const StyledCheckbox = styled.div<{ checked: boolean }>`
-//   display: inline-block;
-//   width: 16px;
-//   height: 16px;
-//   background: ${(props) => (props.checked ? "salmon" : "papayawhip")};
-//   border-radius: 3px;
-//   transition: all 150ms;
-
-//   ${HiddenCheckbox}:focus + & {
-//     box-shadow: 0 0 0 3px pink;
-//   }
-// `;
-
-// const CheckboxContainer = styled.div`
-//   display: inline-block;
-//   vertical-align: middle;
-// `;

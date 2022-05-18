@@ -19,6 +19,8 @@ const Subscriptions: NextPage = () => {
       <ISwiper slides={[1, 2, 3]} />
       <Container>
         <CardItem />
+        <CardItem />
+        <CardItem />
       </Container>
     </MainLayout>
   );

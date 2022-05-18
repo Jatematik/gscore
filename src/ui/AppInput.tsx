@@ -1,10 +1,11 @@
-import React, { InputHTMLAttributes } from 'react';
-import styled, { css, CSSProp } from 'styled-components';
+import React, { InputHTMLAttributes } from "react";
+import styled, { css, CSSProp } from "styled-components";
 
-import { colors } from 'src/styles/colors';
-import SuccsessCheckIcon from 'src/assets/icons/SuccsessCheckIcon';
-import RejectIcon from 'src/assets/icons/RejectIcon';
-import { IText } from './IText';
+import { colors } from "src/styles/colors";
+import SuccsessCheckIcon from "src/assets/icons/SuccsessCheckIcon";
+import RejectIcon from "src/assets/icons/RejectIcon";
+import { IText } from "./IText";
+import CopyIcon from "src/assets/icons/CopyIcon";
 
 export const AppInput: React.FC<AppInputProps> = ({
   containerStyles = {},
@@ -51,7 +52,7 @@ const Input = styled.input<InputProps>`
   border: 1px solid ${colors.gray300};
   box-shadow: 0px 2px 12px rgba(20, 20, 43, 0.06);
   border-radius: 6px;
-  font-family: 'ThiccCboi', sans-serif;
+  font-family: "ThiccCboi", sans-serif;
   font-size: 16px;
   line-height: 18px;
   color: ${colors.black700};
@@ -68,7 +69,7 @@ const Input = styled.input<InputProps>`
 
   ${({ isError }) => isError && `border: 1px solid ${colors.red300};`}
 
-  ${({ isIcon }) => isIcon && 'padding-right: 55px;'}
+  ${({ isIcon }) => isIcon && "padding-right: 55px;"}
 
   ${({ $CSS }) => $CSS};
 `;
