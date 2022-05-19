@@ -1,4 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { loadState } from "./browser-storage";
+
 import { reducers } from "./ducks";
 
 const reducer = combineReducers({
@@ -7,6 +9,7 @@ const reducer = combineReducers({
 
 export const store = configureStore({
   reducer,
+  preloadedState: loadState(),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

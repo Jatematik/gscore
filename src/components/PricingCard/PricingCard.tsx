@@ -9,8 +9,14 @@ import { ILink } from "src/ui/ILink";
 import { IText } from "src/ui/IText";
 import { ITitle } from "src/ui/ITitle";
 import { routes } from "src/types/routes";
+import { ProductProps } from "src/types";
+import {
+  oneSiteBenefits,
+  sevenSitesBenefits,
+  threeSitesBenefits,
+} from "./static";
 
-const PricingCard: React.FC<PricingCardProps> = ({ active }) => {
+const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
   const [activeColor, setActiveColor] = useState<string>("");
 
   useEffect(() => {
@@ -19,9 +25,9 @@ const PricingCard: React.FC<PricingCardProps> = ({ active }) => {
 
   return (
     <Container $active={active}>
-      <Price as="span">$77</Price>
+      <Price as="span">${product.prices[0].price}</Price>
       <ITitle as="h3" containerStyles={titleStyles}>
-        Single site license
+        {product.name}
       </ITitle>
       <IText
         containerStyles={[
@@ -34,30 +40,38 @@ const PricingCard: React.FC<PricingCardProps> = ({ active }) => {
       </IText>
       <Line containerStyles={active ? lineStyles : {}} />
       <ListContainer>
-        <ListItem>
-          <MarkerIcon checkColor={active ? colors.primary : colors.black27} />
-          <IText as="span" containerStyles={textStyles}>
-            Single site license
-          </IText>
-        </ListItem>
-        <ListItem>
-          <MarkerIcon checkColor={active ? colors.primary : colors.black27} />
-          <IText as="span" containerStyles={textStyles}>
-            Special introductory pricing
-          </IText>
-        </ListItem>
-        <ListItem>
-          <MarkerIcon checkColor={active ? colors.primary : colors.black27} />
-          <IText as="span" containerStyles={textStyles}>
-            Unlimited Pages and Keywords
-          </IText>
-        </ListItem>
-        <ListItem>
-          <MarkerIcon checkColor={active ? colors.primary : colors.black27} />
-          <IText as="span" containerStyles={textStyles}>
-            Billed annually
-          </IText>
-        </ListItem>
+        {product.sitesCount === 1
+          ? oneSiteBenefits.map((item) => (
+              <ListItem key={item}>
+                <MarkerIcon
+                  checkColor={active ? colors.primary : colors.black27}
+                />
+                <IText as="span" containerStyles={textStyles}>
+                  {item}
+                </IText>
+              </ListItem>
+            ))
+          : product.sitesCount === 3
+          ? threeSitesBenefits.map((item) => (
+              <ListItem key={item}>
+                <MarkerIcon
+                  checkColor={active ? colors.primary : colors.black27}
+                />
+                <IText as="span" containerStyles={textStyles}>
+                  {item}
+                </IText>
+              </ListItem>
+            ))
+          : sevenSitesBenefits.map((item) => (
+              <ListItem key={item}>
+                <MarkerIcon
+                  checkColor={active ? colors.primary : colors.black27}
+                />
+                <IText as="span" containerStyles={textStyles}>
+                  {item}
+                </IText>
+              </ListItem>
+            ))}
       </ListContainer>
       <ILink
         url={routes.REGISTRATION}
@@ -71,6 +85,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ active }) => {
 
 interface PricingCardProps {
   active?: boolean;
+  product: ProductProps;
 }
 
 const Container = styled.div<{ $active?: boolean }>`

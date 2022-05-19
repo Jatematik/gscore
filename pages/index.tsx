@@ -1,6 +1,4 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import type { GetStaticProps, NextPage } from "next";
 import styled, { css } from "styled-components";
 
 import { PricingCard } from "src/components/PricingCard";
@@ -10,16 +8,22 @@ import { ILink } from "src/ui/ILink";
 import { IText } from "src/ui/IText";
 import { ITitle } from "src/ui/ITitle";
 import Container from "src/layouts/Container/Container";
+import { apiRequests } from "src/services/apiFunctions";
+import { ProductProps } from "src/types";
 
-const Home: NextPage = () => {
+const Home: NextPage<{ products: ProductProps[] }> = ({ products }) => {
   return (
     <MainLayout title="Gscore">
       <Container containerStyles={containerStyles}>
         <ITitle>Get started with Gscore today!</ITitle>
         <CardContainer>
-          <PricingCard />
-          <PricingCard active />
-          <PricingCard />
+          {products.map((product, i) => (
+            <PricingCard
+              key={product.id.toString()}
+              active={i === 1}
+              product={product}
+            />
+          ))}
         </CardContainer>
         <FlexBlock>
           <IText as="span">Have more than 10 sites?</IText>
@@ -57,3 +61,12 @@ const containerStyles = css`
 `;
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const response = await apiRequests.products.getProducts();
+  const products = response.data;
+
+  return {
+    props: { products },
+  };
+};

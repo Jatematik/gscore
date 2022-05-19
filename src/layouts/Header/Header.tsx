@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import LogoIcon from "src/assets/icons/LogoIcon";
@@ -15,6 +15,7 @@ import Container from "../Container/Container";
 
 const Header: React.FC<HeaderProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [userToken, setUserToken] = useState<string>();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectors.user.selectUser);
   const token = useAppSelector(selectors.user.selectToken);
@@ -24,13 +25,17 @@ const Header: React.FC<HeaderProps> = ({}) => {
 
   useOutside(ref, () => setOpen(false));
 
+  useEffect(() => {
+    setUserToken(token);
+  }, [token]);
+
   return (
     <Container>
       <HeaderContainer>
         <ILink url="/">
           <LogoIcon />
         </ILink>
-        {token && (
+        {userToken && (
           <UserContainer>
             <div>
               <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>

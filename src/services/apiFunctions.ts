@@ -19,6 +19,11 @@ const user = {
     httpClient.patch("/api/users", data),
 };
 
+const products = {
+  getProducts: () => httpClient.get("/api/products"),
+};
+
 export const apiRequests = {
   user,
+  products,
 };

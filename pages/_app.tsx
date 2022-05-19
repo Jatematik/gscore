@@ -6,8 +6,17 @@ import "swiper/css/pagination";
 import type { AppProps } from "next/app";
 import GlobalStyle from "src/styles/GlobalStyles";
 import { Provider } from "react-redux";
+import { debounce } from "debounce";
+
 import { store } from "src/store/store";
 import { injectStore } from "src/services/apiClient";
+import { saveState } from "src/store/browser-storage";
+
+store.subscribe(
+  debounce(() => {
+    saveState(store.getState());
+  }, 800)
+);
 
 injectStore(store);
 
