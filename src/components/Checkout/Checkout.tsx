@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { ITitle } from "src/ui/ITitle";
@@ -6,10 +6,55 @@ import { Accordion } from "../Accordion";
 import { StepTabs } from "../StepTabs";
 import { IText } from "src/ui/IText";
 import { IButton } from "src/ui/IButton";
-import TrashIcon from "src/assets/icons/TrashIcon";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { actions, selectors } from "src/store/ducks";
+import { generateKey, totalSum } from "src/utils";
+import { ProductProps } from "src/types";
+import { apiRequests } from "src/services/apiFunctions";
+import { Product } from "../Product";
 
-const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
-  const handlePayment = () => setPayment(true);
+const Checkout: React.FC<CheckoutProps> = ({
+  setPayment,
+  setPurchasedProducts,
+}) => {
+  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const allProducts = useAppSelector(selectors.cart.selectProducts);
+  const dispatch = useAppDispatch();
+
+  const handlePayment = () => {
+    if (products.length > 0) {
+      setLoading(true);
+      const requestArray: Promise<any>[] = [];
+
+      setPurchasedProducts(products);
+
+      products.forEach((item) => {
+        requestArray.push(
+          apiRequests.products.buySubscribe({
+            priceId: item.id,
+          })
+        );
+      });
+
+      Promise.all(requestArray)
+        .then(() => {
+          setLoading(false);
+          setPayment(true);
+          dispatch(actions.cart.resetProduct());
+        })
+        .catch((e) => {
+          console.warn(e);
+          setLoading(false);
+        });
+    }
+  };
+
+  useEffect(() => {
+    setProducts(allProducts);
+  }, [allProducts]);
+
   return (
     <>
       <StepTabs step={3} />
@@ -29,15 +74,20 @@ const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
             </>
           }
           body={
-            <>
-              <IText as="span" containerStyles={bodyStyles}>
-                Single site license
-              </IText>
-              <IText as="span" containerStyles={bodyStyles}>
-                $77
-                <TrashIcon />
-              </IText>
-            </>
+            <Box>
+              {products.length > 0 ? (
+                products.map((product, i) => (
+                  <Product
+                    key={generateKey(product.name)}
+                    product={product}
+                    index={i}
+                    isDeleteBtn
+                  />
+                ))
+              ) : (
+                <IText as="span">No products</IText>
+              )}
+            </Box>
           }
         />
         <Wrapper>
@@ -45,10 +95,14 @@ const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
             Total
           </IText>
           <IText as="span" containerStyles={textStyles}>
-            $77
+            ${totalSum(products)}
           </IText>
         </Wrapper>
-        <IButton containerStyles={btnStyles} onClick={handlePayment}>
+        <IButton
+          containerStyles={btnStyles}
+          onClick={handlePayment}
+          loading={loading}
+        >
           Purchase
         </IButton>
       </Container>
@@ -58,12 +112,19 @@ const Checkout: React.FC<CheckoutProps> = ({ setPayment }) => {
 
 interface CheckoutProps {
   setPayment: Dispatch<SetStateAction<boolean>>;
+  setPurchasedProducts: Dispatch<SetStateAction<ProductProps[]>>;
 }
 
 export default Checkout;
 
 const Container = styled.div`
   padding: 64px 0;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `;
 
 const Wrapper = styled.div`
@@ -94,17 +155,5 @@ const headerStyles = css`
   flex-basis: 85%;
   &:last-child {
     flex-basis: 15%;
-  }
-`;
-
-const bodyStyles = css`
-  font-size: 24px;
-  line-height: 38px;
-  flex-basis: 85%;
-  &:last-child {
-    flex-basis: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 `;

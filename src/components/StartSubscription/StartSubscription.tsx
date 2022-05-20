@@ -6,9 +6,11 @@ import { Accordion } from "../Accordion";
 import { IText } from "src/ui/IText";
 import { ILink } from "src/ui/ILink";
 import { routes } from "src/types/routes";
-import TrashIcon from "src/assets/icons/TrashIcon";
+import { ProductProps } from "src/types";
+import { Product } from "../Product";
+import { generateKey } from "src/utils";
 
-const StartSubscription: React.FC<StartSubscriptionProps> = ({}) => {
+const StartSubscription: React.FC<StartSubscriptionProps> = ({ products }) => {
   return (
     <Container>
       <ITitle as="h3" containerStyles={titleStyles}>
@@ -30,15 +32,15 @@ const StartSubscription: React.FC<StartSubscriptionProps> = ({}) => {
           </>
         }
         body={
-          <>
-            <IText as="span" containerStyles={bodyStyles}>
-              Single site license
-            </IText>
-            <IText as="span" containerStyles={bodyStyles}>
-              $77
-              <TrashIcon />
-            </IText>
-          </>
+          <Box>
+            {products.map((product, i) => (
+              <Product
+                product={product}
+                index={i}
+                key={generateKey(product.name)}
+              />
+            ))}
+          </Box>
         }
       />
       <ILink url={routes.SUBSCRIPTIONS} isButton containerStyles={btnStyles}>
@@ -48,12 +50,20 @@ const StartSubscription: React.FC<StartSubscriptionProps> = ({}) => {
   );
 };
 
-interface StartSubscriptionProps {}
+interface StartSubscriptionProps {
+  products: ProductProps[];
+}
 
 export default StartSubscription;
 
 const Container = styled.div`
   padding: 64px 0;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `;
 
 const headerStyles = css`
@@ -63,18 +73,6 @@ const headerStyles = css`
   flex-basis: 85%;
   &:last-child {
     flex-basis: 15%;
-  }
-`;
-
-const bodyStyles = css`
-  font-size: 24px;
-  line-height: 38px;
-  flex-basis: 85%;
-  &:last-child {
-    flex-basis: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 `;
 

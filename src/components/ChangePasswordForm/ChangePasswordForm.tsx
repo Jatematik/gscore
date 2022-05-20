@@ -61,6 +61,7 @@ const ChangePasswordForm: React.FC = () => {
                 isError={error ? true : false}
                 isSuccess={isSubmitted && !error}
                 errorMessage={error?.message}
+                type="password"
               />
             )}
           />
@@ -82,6 +83,7 @@ const ChangePasswordForm: React.FC = () => {
                 isError={error ? true : false}
                 isSuccess={isSubmitted && !error}
                 errorMessage={error?.message}
+                type="password"
               />
             )}
           />

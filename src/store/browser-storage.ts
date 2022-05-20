@@ -12,7 +12,7 @@ export function loadState() {
 export async function saveState(state: any) {
   try {
     const serializedState = JSON.stringify(state);
-    console.log(state.user.token);
+
     localStorage.setItem(KEY, serializedState);
     document.cookie = `token=${state.user.token}`;
   } catch (e) {

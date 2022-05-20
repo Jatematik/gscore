@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { colors } from "src/styles/colors";
 import { Line } from "src/ui/Line";
 import MarkerIcon from "src/assets/icons/MarkerIcon";
-import { ILink } from "src/ui/ILink";
 import { IText } from "src/ui/IText";
 import { ITitle } from "src/ui/ITitle";
 import { routes } from "src/types/routes";
@@ -15,9 +14,25 @@ import {
   sevenSitesBenefits,
   threeSitesBenefits,
 } from "./static";
+import { IButton } from "src/ui/IButton";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { actions, selectors } from "src/store/ducks";
 
 const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
   const [activeColor, setActiveColor] = useState<string>("");
+  const token = useAppSelector(selectors.user.selectToken);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleButton = () => {
+    dispatch(actions.cart.addProduct(product));
+
+    if (token) {
+      router.push(routes.CHECKOUT);
+    } else {
+      router.push(routes.REGISTRATION);
+    }
+  };
 
   useEffect(() => {
     if (active) setActiveColor(colors.primary); //исправляет React Hydration Error
@@ -73,12 +88,19 @@ const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
               </ListItem>
             ))}
       </ListContainer>
-      <ILink
+      {/* <ILink
         url={routes.REGISTRATION}
         containerStyles={[linkStyles, active ? `color: ${activeColor}` : {}]}
       >
         Get Gscore
-      </ILink>
+      </ILink> */}
+      <IButton
+        btnType="secondary"
+        containerStyles={active ? {} : nonActiveBtn}
+        onClick={handleButton}
+      >
+        Get Gscore
+      </IButton>
     </Container>
   );
 };
@@ -133,6 +155,11 @@ const linkStyles = css`
   font-weight: 700;
   font-size: 18px;
   line-height: 20px;
+  color: ${colors.black18};
+`;
+
+const nonActiveBtn = css`
+  border-radius: 6px;
   color: ${colors.black18};
 `;
 
