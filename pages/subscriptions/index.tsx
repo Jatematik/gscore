@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { css } from "styled-components";
@@ -9,14 +9,23 @@ import { MainLayout } from "src/layouts/MainLayout";
 import { ISwiper } from "src/ui/ISwiper";
 import { ITitle } from "src/ui/ITitle";
 import { IButton } from "src/ui/IButton";
-import { CardItem } from "src/components/CardItem";
+import { CodeItem } from "src/components/CodeItem";
 import { routes } from "src/types/routes";
 import { useAppSelector } from "src/store/hooks";
 import { selectors } from "src/store/ducks";
+import { apiRequests } from "src/services/apiFunctions";
+import { SubscribeCodeProps, SubscribeProps } from "src/types";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
   const token = useAppSelector(selectors.user.selectToken);
+  const [subscribes, setSubscribes] = useState<SubscribeProps[]>([]);
+  const [cardCodes, setCardCodes] = useState<SubscribeCodeProps[]>([]);
+  const codes = useAppSelector(selectors.codes.selectCodes);
+
+  useEffect(() => {
+    setCardCodes(codes);
+  }, [codes]);
 
   useEffect(() => {
     if (!token) {
@@ -24,17 +33,27 @@ const Subscriptions: NextPage = () => {
     }
   }, [token, router]);
 
+  useEffect(() => {
+    apiRequests.products
+      .getSubscribes()
+      .then((res) => {
+        setSubscribes(res.data);
+      })
+      .catch((e) => console.warn(e));
+  }, []);
+
   return (
     <MainLayout title="Gscore | Subscriptions">
       <Container containerStyles={containerStyles}>
         <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
         <IButton containerStyles={buttonStyles}>Upgrade</IButton>
       </Container>
-      <ISwiper slides={[1, 2, 3]} />
+      <ISwiper slides={subscribes} />
       <Container>
-        <CardItem />
-        <CardItem />
-        <CardItem />
+        {cardCodes.length > 0 &&
+          cardCodes.map((item) => (
+            <CodeItem key={item.id.toString()} item={item} />
+          ))}
       </Container>
     </MainLayout>
   );

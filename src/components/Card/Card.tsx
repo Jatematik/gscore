@@ -5,8 +5,18 @@ import { colors } from "src/styles/colors";
 import { IButton } from "src/ui/IButton";
 import { IText } from "src/ui/IText";
 import { Accordion } from "../Accordion";
+import { SubscribeProps } from "src/types";
+import { useAppDispatch } from "src/store/hooks";
+import { actions } from "src/store/ducks";
 
-const Card: React.FC<CardProps> = ({ active }) => {
+const Card: React.FC<CardProps> = ({ active, card }) => {
+  const date = new Date(parseInt(`${card.currentPeriodEnd}000`, 10));
+  const dispatch = useAppDispatch();
+
+  const handleView = () => {
+    dispatch(actions.codes.setCodes(card.codes));
+  };
+
   return (
     <Accordion
       header={
@@ -23,16 +33,21 @@ const Card: React.FC<CardProps> = ({ active }) => {
         <BodyContainer>
           <FlexContainer>
             <IText as="span" containerStyles={bodyStyles}>
-              Single site license
+              {card.product.name}
             </IText>
             <IText as="span" containerStyles={bodyStyles}>
-              $77
+              ${card.product.prices[0].price}
             </IText>
           </FlexContainer>
           <IText as="span" containerStyles={dateValidStyles}>
-            valid until 21.10.2022
+            valid until {date.toLocaleDateString()}
           </IText>
-          <IButton btnType="secondary" containerStyles={buttonStyles}>
+          <IButton
+            btnType="secondary"
+            containerStyles={buttonStyles}
+            onClick={handleView}
+            disabled={!active}
+          >
             View
           </IButton>
         </BodyContainer>
@@ -44,6 +59,7 @@ const Card: React.FC<CardProps> = ({ active }) => {
 
 interface CardProps {
   active?: boolean;
+  card: SubscribeProps;
 }
 
 export default Card;

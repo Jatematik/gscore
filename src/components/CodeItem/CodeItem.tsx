@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, CSSProp } from "styled-components";
 
 import { colors } from "src/styles/colors";
 import { CheckBox } from "src/ui/CheckBox";
 import { IText } from "src/ui/IText";
 import { DarkInput } from "src/ui/DarkInput";
+import { statuses, SubscribeCodeProps, SubscribeProps } from "src/types";
 
-const CardItem: React.FC = () => {
+const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
   const [checked, setChecked] = useState<boolean>(false);
 
   return (
@@ -20,27 +21,41 @@ const CardItem: React.FC = () => {
         <IText as="span" containerStyles={titleStyles}>
           License code
         </IText>
-        <DarkInput />
+        <DarkInput defaultValue={item.code} disabled isCopied />
       </Box>
       <Box>
         <IText as="span" containerStyles={titleStyles}>
           Domain
         </IText>
-        <DarkInput />
+        <DarkInput defaultValue={item.origin ? item.origin : ""} disabled />
       </Box>
       <Box>
         <IText as="span" containerStyles={titleStyles}>
           Status
         </IText>
-        <IText as="span" containerStyles={statusStyles}>
-          Active
+        <IText
+          as="span"
+          containerStyles={[
+            statusStyles,
+            item.status === statuses.ACTIVE
+              ? active
+              : item.status === statuses.INACTIVE
+              ? inactive
+              : hold,
+          ]}
+        >
+          {item.status}
         </IText>
       </Box>
     </Container>
   );
 };
 
-export default CardItem;
+interface CodeItemProps {
+  item: SubscribeCodeProps;
+}
+
+export default CodeItem;
 
 const Container = styled.div`
   display: flex;
@@ -83,5 +98,16 @@ const statusStyles = css`
   font-weight: 700;
   font-size: 22px;
   line-height: 28px;
+`;
+
+const active = css`
   color: ${colors.green300};
+`;
+
+const inactive = css`
+  color: ${colors.red300};
+`;
+
+const hold = css`
+  color: ${colors.orange300};
 `;

@@ -24,6 +24,8 @@ const products = {
 
   buySubscribe: (data: { priceId: number }) =>
     httpClient.post("/api/payments/buy", data),
+
+  getSubscribes: () => httpClient.get("/api/subscribe/self"),
 };
 
 export const apiRequests = {

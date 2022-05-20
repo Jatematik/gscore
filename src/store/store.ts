@@ -6,6 +6,7 @@ import { reducers } from "./ducks";
 const reducer = combineReducers({
   user: reducers.user,
   cart: reducers.cart,
+  codes: reducers.codes,
 });
 
 export const store = configureStore({

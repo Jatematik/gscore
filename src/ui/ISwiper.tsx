@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide, SwiperProps } from "swiper/react";
 import { Navigation } from "swiper";
 import type { Swiper as SwiperType } from "swiper";
@@ -8,6 +8,9 @@ import { Card } from "src/components/Card";
 import ArrowIcon from "src/assets/icons/ArrowIcon";
 import { colors } from "src/styles/colors";
 import { IText } from "./IText";
+import { SubscribeCodeProps, SubscribeProps } from "src/types";
+import { useAppSelector } from "src/store/hooks";
+import { selectors } from "src/store/ducks";
 
 export const ISwiper: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
   const [swiper, setSwiper] = useState<SwiperType>();
@@ -37,7 +40,7 @@ export const ISwiper: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
       >
         {slides.map((slide, i) => (
           <SwiperSlide key={i.toString()}>
-            {({ isActive }) => <Card active={isActive} />}
+            {({ isActive }) => <Card active={isActive} card={slide} />}
           </SwiperSlide>
         ))}
 
@@ -69,7 +72,7 @@ export const ISwiper: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
 };
 
 interface ISwiperProps {
-  slides: any[];
+  slides: SubscribeProps[];
 }
 
 const ContainerSwiper = styled.div`
