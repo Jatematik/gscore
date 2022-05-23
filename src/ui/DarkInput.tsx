@@ -4,7 +4,6 @@ import styled, { css, CSSProp } from "styled-components";
 import { colors } from "src/styles/colors";
 import CopyIcon from "src/assets/icons/CopyIcon";
 import { successRequestMessage } from "src/services/toastFunctions";
-import { IToast } from "./IToast";
 
 export const DarkInput: React.FC<DarkInputProps> = ({
   containerStyles = {},
@@ -18,17 +17,14 @@ export const DarkInput: React.FC<DarkInputProps> = ({
   };
 
   return (
-    <>
-      <ContainerInput>
-        <Input $CSS={containerStyles} {...props} isCopied={isCopied} />
-        {isCopied && (
-          <CopyBtn onClick={copiedToClipboard}>
-            <CopyIcon />
-          </CopyBtn>
-        )}
-      </ContainerInput>
-      <IToast />
-    </>
+    <ContainerInput>
+      <Input $CSS={containerStyles} {...props} isCopied={isCopied} />
+      {isCopied && (
+        <CopyBtn onClick={copiedToClipboard}>
+          <CopyIcon />
+        </CopyBtn>
+      )}
+    </ContainerInput>
   );
 };
 

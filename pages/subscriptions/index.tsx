@@ -1,31 +1,30 @@
 import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 import * as cookie from "cookie";
 
 import Container from "src/layouts/Container/Container";
 import { MainLayout } from "src/layouts/MainLayout";
-import { ISwiper } from "src/ui/ISwiper";
+import { SwiperSlider } from "src/components/SwiperSlider";
 import { ITitle } from "src/ui/ITitle";
 import { IButton } from "src/ui/IButton";
 import { CodeItem } from "src/components/CodeItem";
 import { routes } from "src/types/routes";
-import { useAppSelector } from "src/store/hooks";
-import { selectors } from "src/store/ducks";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { selectors, thunks } from "src/store/ducks";
 import { apiRequests } from "src/services/apiFunctions";
 import { SubscribeCodeProps, SubscribeProps } from "src/types";
+import { IText } from "src/ui/IText";
+import { IToast } from "src/ui/IToast";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
   const token = useAppSelector(selectors.user.selectToken);
-  const [subscribes, setSubscribes] = useState<SubscribeProps[]>([]);
+  const subscribes = useAppSelector(selectors.subscribes.selectSubscribes);
   const [cardCodes, setCardCodes] = useState<SubscribeCodeProps[]>([]);
-  const codes = useAppSelector(selectors.codes.selectCodes);
 
-  useEffect(() => {
-    setCardCodes(codes);
-  }, [codes]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!token) {
@@ -34,13 +33,8 @@ const Subscriptions: NextPage = () => {
   }, [token, router]);
 
   useEffect(() => {
-    apiRequests.products
-      .getSubscribes()
-      .then((res) => {
-        setSubscribes(res.data);
-      })
-      .catch((e) => console.warn(e));
-  }, []);
+    dispatch(thunks.subscribes.asyncGetSubscribes({}));
+  }, [dispatch]);
 
   return (
     <MainLayout title="Gscore | Subscriptions">
@@ -48,12 +42,19 @@ const Subscriptions: NextPage = () => {
         <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
         <IButton containerStyles={buttonStyles}>Upgrade</IButton>
       </Container>
-      <ISwiper slides={subscribes} />
+      <SwiperSlider slides={subscribes} />
       <Container>
         {cardCodes.length > 0 &&
           cardCodes.map((item) => (
             <CodeItem key={item.id.toString()} item={item} />
           ))}
+        <ConfirmContainer>
+          <IText containerStyles={confirmStyles}>
+            Select the domains you want to keep
+          </IText>
+          <IButton>Confirm</IButton>
+        </ConfirmContainer>
+        <IToast />
       </Container>
     </MainLayout>
   );
@@ -86,6 +87,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 };
 
+const ConfirmContainer = styled.div`
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const titleStyles = css`
   text-align: start;
 `;
@@ -98,4 +106,10 @@ const containerStyles = css`
   margin: 32px auto;
   display: flex;
   justify-content: space-between;
+`;
+
+const confirmStyles = css`
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 22px;
 `;

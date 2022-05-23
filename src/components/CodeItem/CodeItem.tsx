@@ -5,34 +5,51 @@ import { colors } from "src/styles/colors";
 import { CheckBox } from "src/ui/CheckBox";
 import { IText } from "src/ui/IText";
 import { DarkInput } from "src/ui/DarkInput";
-import { statuses, SubscribeCodeProps, SubscribeProps } from "src/types";
+import { statuses, SubscribeCodeProps } from "src/types";
+import { IButton } from "src/ui/IButton";
+import { useAppDispatch } from "src/store/hooks";
+import { actions } from "src/store/ducks";
 
 const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
   const [checked, setChecked] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const handleActivate = () => {};
 
   return (
-    <Container>
-      <CheckBox
-        isChecked={checked}
-        onChange={() => setChecked(!checked)}
-        containerStyles={checkBoxStyles}
-      />
-      <Box>
+    <Container isActive={item.status}>
+      <GridBox>
         <IText as="span" containerStyles={titleStyles}>
           License code
         </IText>
-        <DarkInput defaultValue={item.code} disabled isCopied />
-      </Box>
-      <Box>
+      </GridBox>
+      <GridBox>
         <IText as="span" containerStyles={titleStyles}>
           Domain
         </IText>
-        <DarkInput defaultValue={item.origin ? item.origin : ""} disabled />
-      </Box>
-      <Box>
+      </GridBox>
+      <GridBox>
         <IText as="span" containerStyles={titleStyles}>
           Status
         </IText>
+      </GridBox>
+      <GridBox>
+        <CheckBox isChecked={checked} onChange={() => setChecked(!checked)} />
+      </GridBox>
+      <GridBox>
+        <DarkInput defaultValue={item.code} disabled isCopied />
+      </GridBox>
+      <GridBox>
+        <DarkInput defaultValue={item.origin ? item.origin : ""} disabled />
+      </GridBox>
+      {item.status === statuses.INACTIVE && (
+        <GridBox>
+          <IButton btnType="secondary" onClick={handleActivate}>
+            Activate
+          </IButton>
+        </GridBox>
+      )}
+      <GridBox>
         <IText
           as="span"
           containerStyles={[
@@ -46,7 +63,7 @@ const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
         >
           {item.status}
         </IText>
-      </Box>
+      </GridBox>
     </Container>
   );
 };
@@ -57,31 +74,71 @@ interface CodeItemProps {
 
 export default CodeItem;
 
-const Container = styled.div`
-  display: flex;
+const GridBox = styled.div``;
+
+const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
   padding: 24px 32px 31px;
   margin-bottom: 32px;
   background-color: ${colors.black27};
   border-radius: 12px;
-`;
 
-const Box = styled.div`
-  width: 296px;
-  margin-right: 28px;
-  &:nth-child(3) {
-    width: 620px;
-    margin-right: 56px;
-  }
-  &:nth-child(4) {
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    margin-right: auto;
-  }
-`;
+  display: grid;
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
 
-const checkBoxStyles = css`
-  margin: auto 48px 23px 0;
+  ${({ isActive }) =>
+    isActive === statuses.ACTIVE
+      ? css`
+          grid-template-columns: 0.3fr 2fr 4fr 1fr;
+        `
+      : css`
+          grid-template-columns: 0.3fr 2fr 3fr repeat(2, 1fr);
+        `}
+
+  & > ${GridBox} {
+    ${({ isActive }) =>
+      isActive === statuses.ACTIVE
+        ? css`
+            &:nth-child(1) {
+              grid-column: 2 / 3;
+            }
+            &:nth-child(2) {
+              grid-column: 3 / 4;
+            }
+            &:nth-child(3) {
+              grid-column: 4 / 5;
+            }
+            &:nth-child(4) {
+              align-self: center;
+            }
+            &:nth-child(7) {
+              align-self: center;
+            }
+          `
+        : css`
+            &:nth-child(1) {
+              grid-column: 2 / 3;
+            }
+            &:nth-child(2) {
+              grid-column: 3 / 4;
+            }
+            &:nth-child(3) {
+              grid-column: 5 / 6;
+            }
+            &:nth-child(4) {
+              align-self: center;
+            }
+            &:nth-child(7) {
+              display: flex;
+              justify-content: center;
+              align-self: center;
+              align-items: center;
+            }
+            &:nth-child(8) {
+              align-self: center;
+            }
+          `};
+  }
 `;
 
 const titleStyles = css`

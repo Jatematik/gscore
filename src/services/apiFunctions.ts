@@ -28,7 +28,13 @@ const products = {
   getSubscribes: () => httpClient.get("/api/subscribe/self"),
 };
 
+const codes = {
+  activateCode: (data: { code: string }) =>
+    httpClient.post("api/code/activate", data),
+};
+
 export const apiRequests = {
   user,
   products,
+  codes,
 };
