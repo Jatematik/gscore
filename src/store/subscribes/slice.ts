@@ -32,12 +32,20 @@ const subscribesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      subscribesThunks.asyncGetSubscribes.fulfilled,
-      (state, action: PayloadAction<SubscribeProps[]>) => {
-        state.subscribes = action.payload;
-      }
-    );
+    builder
+      .addCase(subscribesThunks.asyncGetSubscribes.pending, (state) => {
+        state.loading = "pending";
+      })
+      .addCase(
+        subscribesThunks.asyncGetSubscribes.fulfilled,
+        (state, action: PayloadAction<SubscribeProps[]>) => {
+          state.subscribes = action.payload;
+          state.loading = "fulfilled";
+        }
+      )
+      .addCase(subscribesThunks.asyncGetSubscribes.rejected, (state) => {
+        state.loading = "rejected";
+      });
   },
 });
 

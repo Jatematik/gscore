@@ -6,6 +6,18 @@ const selectSubscribes = createSelector(
   (subscribes) => subscribes.subscribes
 );
 
+const selectLoading = createSelector(
+  (state: RootState) => state.subscribes,
+  (subscribes) => subscribes.loading
+);
+
+const selectError = createSelector(
+  (state: RootState) => state.subscribes,
+  (subscribes) => subscribes.error
+);
+
 export const subscribesSelectors = {
   selectSubscribes,
+  selectLoading,
+  selectError,
 };

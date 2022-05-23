@@ -15,6 +15,8 @@ import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectors, thunks } from "src/store/ducks";
 import { IText } from "src/ui/IText";
 import { IToast } from "src/ui/IToast";
+import CrossIcon from "src/assets/icons/CrossIcon";
+import { ILink } from "src/ui/ILink";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
@@ -25,6 +27,7 @@ const Subscriptions: NextPage = () => {
   const subscribes = useAppSelector(selectors.subscribes.selectSubscribes);
   const codes = useAppSelector(selectors.codes.selectCodes);
   const subscribeCardId = useAppSelector(selectors.codes.selectId);
+  const loading = useAppSelector(selectors.subscribes.selectLoading);
 
   const dispatch = useAppDispatch();
 
@@ -42,34 +45,64 @@ const Subscriptions: NextPage = () => {
 
   return (
     <MainLayout title="Gscore | Subscriptions">
-      <Container containerStyles={containerStyles}>
-        <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
-        <IButton containerStyles={buttonStyles} onClick={handleUpgrade}>
-          Upgrade
-        </IButton>
-      </Container>
-      {subscribes.length > 0 && <SwiperSlider slides={subscribes} />}
-      <Container>
-        {codes.length > 0 && (
-          <>
-            {codes.map((item) => (
-              <CodeItem
-                key={item.id.toString()}
-                item={item}
-                subscribeCardId={subscribeCardId}
-                isActive={upgrade}
-              />
-            ))}
-            <ConfirmContainer>
-              <IText containerStyles={confirmStyles}>
-                Select the domains you want to keep
+      {loading === "pending" ? (
+        <Container containerStyles={noSubscribeContainerStyles}>
+          <IText containerStyles={noSubscribeSubText}>Loading...</IText>
+        </Container>
+      ) : (
+        <>
+          {subscribes.length > 0 ? (
+            <>
+              <Container containerStyles={containerStyles}>
+                <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
+                <IButton containerStyles={buttonStyles} onClick={handleUpgrade}>
+                  Upgrade
+                </IButton>
+              </Container>
+              <SwiperSlider slides={subscribes} />
+              <Container>
+                {codes.length > 0 && (
+                  <>
+                    {codes.map((item) => (
+                      <CodeItem
+                        key={item.id.toString()}
+                        item={item}
+                        subscribeCardId={subscribeCardId}
+                        isActive={upgrade}
+                      />
+                    ))}
+                    <ConfirmContainer>
+                      <IText containerStyles={confirmStyles}>
+                        Select the domains you want to keep
+                      </IText>
+                      <IButton>Confirm</IButton>
+                    </ConfirmContainer>
+                  </>
+                )}
+                <IToast />
+              </Container>
+            </>
+          ) : (
+            <Container containerStyles={noSubscribeContainerStyles}>
+              <CrossIcon />
+              <IText containerStyles={noSubscribeText}>
+                No active subscriptions
               </IText>
-              <IButton>Confirm</IButton>
-            </ConfirmContainer>
-          </>
-        )}
-        <IToast />
-      </Container>
+              <IText containerStyles={noSubscribeSubText}>
+                You can subscribe right now by clicking on the button below
+              </IText>
+              <ILink
+                url="/"
+                isButton
+                btnType="primary"
+                containerStyles={noSubscribeLink}
+              >
+                Get Gscore
+              </ILink>
+            </Container>
+          )}
+        </>
+      )}
     </MainLayout>
   );
 };
@@ -126,4 +159,29 @@ const confirmStyles = css`
   font-weight: 700;
   font-size: 20px;
   line-height: 22px;
+`;
+
+const noSubscribeContainerStyles = css`
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 430px;
+`;
+
+const noSubscribeText = css`
+  margin: 24px 0 8px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 40px;
+  text-align: center;
+`;
+
+const noSubscribeSubText = css`
+  margin-bottom: 32px;
+  text-align: center;
+`;
+
+const noSubscribeLink = css`
+  min-width: 164px;
 `;
