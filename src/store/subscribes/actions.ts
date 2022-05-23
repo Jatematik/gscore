@@ -1,6 +1,5 @@
-import { setCodes, activateCode } from "./slice";
+import { updateCode } from "./slice";
 
 export const subscribesActions = {
-  setCodes,
-  activateCode,
+  updateCode,
 };

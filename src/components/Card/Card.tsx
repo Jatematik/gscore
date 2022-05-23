@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 
 import { colors } from "src/styles/colors";
 import { IButton } from "src/ui/IButton";
 import { IText } from "src/ui/IText";
 import { Accordion } from "../Accordion";
-import { SubscribeCodeProps, SubscribeProps } from "src/types";
+import { SubscribeProps } from "src/types";
 import { useAppDispatch } from "src/store/hooks";
 import { actions } from "src/store/ducks";
 
@@ -14,7 +14,12 @@ const Card: React.FC<CardProps> = ({ active, card }) => {
   const dispatch = useAppDispatch();
 
   const handleView = () => {
-    console.log(card);
+    dispatch(
+      actions.codes.setCodes({
+        codes: card.codes,
+        id: card.id,
+      })
+    );
   };
 
   return (

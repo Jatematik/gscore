@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import type { Swiper as SwiperType } from "swiper";
@@ -8,7 +8,7 @@ import { Card } from "src/components/Card";
 import ArrowIcon from "src/assets/icons/ArrowIcon";
 import { colors } from "src/styles/colors";
 import { IText } from "../../ui/IText";
-import { SubscribeCodeProps, SubscribeProps } from "src/types";
+import { SubscribeProps } from "src/types";
 
 const SwiperSlider: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
   const [swiper, setSwiper] = useState<SwiperType>();

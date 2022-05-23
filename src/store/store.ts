@@ -7,6 +7,7 @@ const reducer = combineReducers({
   user: reducers.user,
   cart: reducers.cart,
   subscribes: reducers.subscribes,
+  codes: reducers.codes,
 });
 
 export const store = configureStore({

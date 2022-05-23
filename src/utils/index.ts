@@ -17,3 +17,7 @@ export const totalSum = (products: ProductProps[]) => {
 export const generateKey = (pre: string) => {
   return `${pre}_${new Date().getTime()}`;
 };
+
+export const transformText = (text: string) => {
+  return `${text[0]}${text.substring(1).toLowerCase()}`;
+};

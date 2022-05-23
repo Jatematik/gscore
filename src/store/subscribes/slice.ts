@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SubscribeCodeProps, SubscribeProps } from "src/types";
-import { subscribesThunks } from "./thunk";
+import { SubscribeProps } from "src/types";
+import { subscribesThunks } from "./thunks";
 import { ActivateCodeProps, SubscribesState } from "./types";
 
 const initialState: SubscribesState = {
@@ -11,8 +11,25 @@ const subscribesSlice = createSlice({
   initialState,
   name: "codes",
   reducers: {
-    setCodes(state, action: PayloadAction<SubscribeCodeProps[]>) {},
-    activateCode(state, action: PayloadAction<ActivateCodeProps>) {},
+    updateCode(
+      state,
+      action: PayloadAction<{ id: number; code: ActivateCodeProps }>
+    ) {
+      state.subscribes.forEach((subscribe) => {
+        if (subscribe.id === action.payload.id) {
+          subscribe.codes.forEach((code) => {
+            if (code.id === action.payload.code.id) {
+              code.code = action.payload.code.code;
+              code.id = action.payload.code.id;
+              code.origin = action.payload.code.origin;
+              code.status = action.payload.code.status;
+              code.subscribeId = action.payload.code.subscribeId;
+              code.userId = action.payload.code.userId;
+            }
+          });
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -24,6 +41,6 @@ const subscribesSlice = createSlice({
   },
 });
 
-export const { setCodes, activateCode } = subscribesSlice.actions;
+export const { updateCode } = subscribesSlice.actions;
 
 export default subscribesSlice.reducer;

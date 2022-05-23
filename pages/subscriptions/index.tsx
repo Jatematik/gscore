@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import styled, { css } from "styled-components";
@@ -13,16 +13,16 @@ import { CodeItem } from "src/components/CodeItem";
 import { routes } from "src/types/routes";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectors, thunks } from "src/store/ducks";
-import { apiRequests } from "src/services/apiFunctions";
-import { SubscribeCodeProps, SubscribeProps } from "src/types";
 import { IText } from "src/ui/IText";
 import { IToast } from "src/ui/IToast";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
+
   const token = useAppSelector(selectors.user.selectToken);
   const subscribes = useAppSelector(selectors.subscribes.selectSubscribes);
-  const [cardCodes, setCardCodes] = useState<SubscribeCodeProps[]>([]);
+  const codes = useAppSelector(selectors.codes.selectCodes);
+  const subscribeCardId = useAppSelector(selectors.codes.selectId);
 
   const dispatch = useAppDispatch();
 
@@ -42,18 +42,25 @@ const Subscriptions: NextPage = () => {
         <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
         <IButton containerStyles={buttonStyles}>Upgrade</IButton>
       </Container>
-      <SwiperSlider slides={subscribes} />
+      {subscribes.length > 0 && <SwiperSlider slides={subscribes} />}
       <Container>
-        {cardCodes.length > 0 &&
-          cardCodes.map((item) => (
-            <CodeItem key={item.id.toString()} item={item} />
-          ))}
-        <ConfirmContainer>
-          <IText containerStyles={confirmStyles}>
-            Select the domains you want to keep
-          </IText>
-          <IButton>Confirm</IButton>
-        </ConfirmContainer>
+        {codes.length > 0 && (
+          <>
+            {codes.map((item) => (
+              <CodeItem
+                key={item.id.toString()}
+                item={item}
+                subscribeCardId={subscribeCardId}
+              />
+            ))}
+            <ConfirmContainer>
+              <IText containerStyles={confirmStyles}>
+                Select the domains you want to keep
+              </IText>
+              <IButton>Confirm</IButton>
+            </ConfirmContainer>
+          </>
+        )}
         <IToast />
       </Container>
     </MainLayout>

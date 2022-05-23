@@ -38,11 +38,13 @@ interface ButtonProps {
 
 const Button = styled.button<ButtonProps>`
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "ThiccCboi";
   font-weight: 700;
   font-size: 16px;
   line-height: 18px;
-  text-align: center;
   border-radius: 4px;
   border: none;
   transition: 0.25s;

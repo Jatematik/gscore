@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css, CSSProp } from "styled-components";
+import styled, { css } from "styled-components";
 
 import { colors } from "src/styles/colors";
 import { CheckBox } from "src/ui/CheckBox";
@@ -8,13 +8,35 @@ import { DarkInput } from "src/ui/DarkInput";
 import { statuses, SubscribeCodeProps } from "src/types";
 import { IButton } from "src/ui/IButton";
 import { useAppDispatch } from "src/store/hooks";
-import { actions } from "src/store/ducks";
+import { actions, thunks } from "src/store/ducks";
+import { transformText } from "src/utils";
 
-const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
+const CodeItem: React.FC<CodeItemProps> = ({ item, subscribeCardId }) => {
   const [checked, setChecked] = useState<boolean>(false);
+  const [load, setLoad] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const handleActivate = () => {};
+  const handleActivate = () => {
+    setLoad(true);
+    dispatch(
+      thunks.codes.asyncActivateCode({
+        code: item.code,
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        dispatch(
+          actions.subscribes.updateCode({
+            id: subscribeCardId,
+            code: {
+              ...res,
+            },
+          })
+        );
+      })
+      .catch((e) => console.warn(e))
+      .finally(() => setLoad(false));
+  };
 
   return (
     <Container isActive={item.status}>
@@ -44,7 +66,12 @@ const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
       </GridBox>
       {item.status === statuses.INACTIVE && (
         <GridBox>
-          <IButton btnType="secondary" onClick={handleActivate}>
+          <IButton
+            btnType="secondary"
+            onClick={handleActivate}
+            containerStyles={buttonStyles}
+            loading={load}
+          >
             Activate
           </IButton>
         </GridBox>
@@ -61,7 +88,7 @@ const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
               : hold,
           ]}
         >
-          {item.status}
+          {transformText(item.status)}
         </IText>
       </GridBox>
     </Container>
@@ -70,6 +97,7 @@ const CodeItem: React.FC<CodeItemProps> = ({ item }) => {
 
 interface CodeItemProps {
   item: SubscribeCodeProps;
+  subscribeCardId: number;
 }
 
 export default CodeItem;
@@ -83,16 +111,16 @@ const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
   border-radius: 12px;
 
   display: grid;
-  grid-column-gap: 20px;
+  grid-column-gap: 35px;
   grid-row-gap: 10px;
 
   ${({ isActive }) =>
     isActive === statuses.ACTIVE
       ? css`
-          grid-template-columns: 0.3fr 2fr 4fr 1fr;
+          grid-template-columns: 60px 296px 4fr 160px;
         `
       : css`
-          grid-template-columns: 0.3fr 2fr 3fr repeat(2, 1fr);
+          grid-template-columns: 60px 296px 3fr 1fr 160px;
         `}
 
   & > ${GridBox} {
@@ -148,6 +176,10 @@ const titleStyles = css`
   font-size: 16px;
   line-height: 18px;
   color: ${colors.gray500};
+`;
+
+const buttonStyles = css`
+  min-width: 111px;
 `;
 
 const statusStyles = css`
