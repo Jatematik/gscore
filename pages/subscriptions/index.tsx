@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import styled, { css } from "styled-components";
@@ -19,12 +19,16 @@ import { IToast } from "src/ui/IToast";
 const Subscriptions: NextPage = () => {
   const router = useRouter();
 
+  const [upgrade, setUpgrade] = useState<boolean>(true);
+
   const token = useAppSelector(selectors.user.selectToken);
   const subscribes = useAppSelector(selectors.subscribes.selectSubscribes);
   const codes = useAppSelector(selectors.codes.selectCodes);
   const subscribeCardId = useAppSelector(selectors.codes.selectId);
 
   const dispatch = useAppDispatch();
+
+  const handleUpgrade = () => setUpgrade(false);
 
   useEffect(() => {
     if (!token) {
@@ -40,7 +44,9 @@ const Subscriptions: NextPage = () => {
     <MainLayout title="Gscore | Subscriptions">
       <Container containerStyles={containerStyles}>
         <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
-        <IButton containerStyles={buttonStyles}>Upgrade</IButton>
+        <IButton containerStyles={buttonStyles} onClick={handleUpgrade}>
+          Upgrade
+        </IButton>
       </Container>
       {subscribes.length > 0 && <SwiperSlider slides={subscribes} />}
       <Container>
@@ -51,6 +57,7 @@ const Subscriptions: NextPage = () => {
                 key={item.id.toString()}
                 item={item}
                 subscribeCardId={subscribeCardId}
+                isActive={upgrade}
               />
             ))}
             <ConfirmContainer>

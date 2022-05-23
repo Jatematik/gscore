@@ -11,7 +11,11 @@ import { useAppDispatch } from "src/store/hooks";
 import { actions, thunks } from "src/store/ducks";
 import { transformText } from "src/utils";
 
-const CodeItem: React.FC<CodeItemProps> = ({ item, subscribeCardId }) => {
+const CodeItem: React.FC<CodeItemProps> = ({
+  item,
+  subscribeCardId,
+  isActive,
+}) => {
   const [checked, setChecked] = useState<boolean>(false);
   const [load, setLoad] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -56,7 +60,11 @@ const CodeItem: React.FC<CodeItemProps> = ({ item, subscribeCardId }) => {
         </IText>
       </GridBox>
       <GridBox>
-        <CheckBox isChecked={checked} onChange={() => setChecked(!checked)} />
+        <CheckBox
+          isChecked={checked}
+          onChange={() => setChecked(!checked)}
+          disabled={isActive}
+        />
       </GridBox>
       <GridBox>
         <DarkInput defaultValue={item.code} disabled isCopied />
@@ -71,6 +79,7 @@ const CodeItem: React.FC<CodeItemProps> = ({ item, subscribeCardId }) => {
             onClick={handleActivate}
             containerStyles={buttonStyles}
             loading={load}
+            disabled={isActive}
           >
             Activate
           </IButton>
@@ -98,6 +107,7 @@ const CodeItem: React.FC<CodeItemProps> = ({ item, subscribeCardId }) => {
 interface CodeItemProps {
   item: SubscribeCodeProps;
   subscribeCardId: number;
+  isActive: boolean;
 }
 
 export default CodeItem;

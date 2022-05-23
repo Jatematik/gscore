@@ -16,7 +16,6 @@ const SignInForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectors.user.selectLoading);
-  const error = useAppSelector(selectors.user.selectError);
 
   const {
     control,
@@ -30,19 +29,15 @@ const SignInForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<InputsType> = (data) => {
-    dispatch(thunks.user.signIn(data)).then((response) => {
-      if (response.type === "users/sign-in/fulfilled") {
+    dispatch(thunks.user.signIn(data))
+      .unwrap()
+      .then(() => {
         router.push(routes.CHECKOUT);
-      }
-    });
+      })
+      .catch((e) => {
+        errorRequestMessage(e);
+      });
   };
-
-  useEffect(() => {
-    if (error) {
-      errorRequestMessage(error);
-      dispatch(actions.user.resetError());
-    }
-  }, [error, dispatch]);
 
   return (
     <Container>

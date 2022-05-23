@@ -1,6 +1,5 @@
-import { logOut, resetError } from "./slice";
+import { logOut } from "./slice";
 
 export const userActions = {
   logOut,
-  resetError,
 };

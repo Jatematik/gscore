@@ -18,9 +18,6 @@ const userSlice = createSlice({
     logOut() {
       return initialState;
     },
-    resetError(state) {
-      state.error = "";
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,5 +87,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logOut, resetError } = userSlice.actions;
+export const { logOut } = userSlice.actions;
 export default userSlice.reducer;

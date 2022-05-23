@@ -6,7 +6,6 @@ import { IText } from "./IText";
 export const CheckBox: React.FC<CheckBoxProps> = ({
   isChecked,
   label,
-  disabled,
   containerStyles = {},
   ...props
 }): JSX.Element => {
