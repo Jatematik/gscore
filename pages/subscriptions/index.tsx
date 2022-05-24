@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import styled, { css } from "styled-components";
+import { css } from "styled-components";
 import * as cookie from "cookie";
 
 import Container from "src/layouts/Container/Container";
@@ -9,29 +9,27 @@ import { MainLayout } from "src/layouts/MainLayout";
 import { SwiperSlider } from "src/components/SwiperSlider";
 import { ITitle } from "src/ui/ITitle";
 import { IButton } from "src/ui/IButton";
-import { CodeItem } from "src/components/CodeItem";
 import { routes } from "src/types/routes";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectors, thunks } from "src/store/ducks";
 import { IText } from "src/ui/IText";
-import { IToast } from "src/ui/IToast";
-import CrossIcon from "src/assets/icons/CrossIcon";
-import { ILink } from "src/ui/ILink";
+import { ModalUpgrade } from "src/components/ModalUpgrade";
+import { NoContentSubscribe } from "src/ui/NoContentSubscribe";
+import { CodeForm } from "src/components/CodeForm";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
 
-  const [upgrade, setUpgrade] = useState<boolean>(true);
+  const [openUpgrade, setOpenUpgrade] = useState<boolean>(false);
+  const [subscribeId, setSubscribeId] = useState<number>(0);
 
   const token = useAppSelector(selectors.user.selectToken);
   const subscribes = useAppSelector(selectors.subscribes.selectSubscribes);
-  const codes = useAppSelector(selectors.codes.selectCodes);
-  const subscribeCardId = useAppSelector(selectors.codes.selectId);
   const loading = useAppSelector(selectors.subscribes.selectLoading);
 
   const dispatch = useAppDispatch();
 
-  const handleUpgrade = () => setUpgrade(false);
+  const handleUpgrade = () => setOpenUpgrade(!openUpgrade);
 
   useEffect(() => {
     if (!token) {
@@ -59,50 +57,22 @@ const Subscriptions: NextPage = () => {
                   Upgrade
                 </IButton>
               </Container>
-              <SwiperSlider slides={subscribes} />
-              <Container>
-                {codes.length > 0 && (
-                  <>
-                    {codes.map((item) => (
-                      <CodeItem
-                        key={item.id.toString()}
-                        item={item}
-                        subscribeCardId={subscribeCardId}
-                        isActive={upgrade}
-                      />
-                    ))}
-                    <ConfirmContainer>
-                      <IText containerStyles={confirmStyles}>
-                        Select the domains you want to keep
-                      </IText>
-                      <IButton>Confirm</IButton>
-                    </ConfirmContainer>
-                  </>
-                )}
-                <IToast />
-              </Container>
+              <SwiperSlider
+                slides={subscribes}
+                setSubscribeId={setSubscribeId}
+              />
+              <CodeForm />
             </>
           ) : (
-            <Container containerStyles={noSubscribeContainerStyles}>
-              <CrossIcon />
-              <IText containerStyles={noSubscribeText}>
-                No active subscriptions
-              </IText>
-              <IText containerStyles={noSubscribeSubText}>
-                You can subscribe right now by clicking on the button below
-              </IText>
-              <ILink
-                url="/"
-                isButton
-                btnType="primary"
-                containerStyles={noSubscribeLink}
-              >
-                Get Gscore
-              </ILink>
-            </Container>
+            <NoContentSubscribe />
           )}
         </>
       )}
+      <ModalUpgrade
+        isOpen={openUpgrade}
+        onRequestClose={handleUpgrade}
+        subscribeId={subscribeId}
+      />
     </MainLayout>
   );
 };
@@ -134,13 +104,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 };
 
-const ConfirmContainer = styled.div`
-  padding-bottom: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const titleStyles = css`
   text-align: start;
 `;
@@ -155,12 +118,6 @@ const containerStyles = css`
   justify-content: space-between;
 `;
 
-const confirmStyles = css`
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 22px;
-`;
-
 const noSubscribeContainerStyles = css`
   padding: 100px 0;
   display: flex;
@@ -169,19 +126,7 @@ const noSubscribeContainerStyles = css`
   max-width: 430px;
 `;
 
-const noSubscribeText = css`
-  margin: 24px 0 8px;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 40px;
-  text-align: center;
-`;
-
 const noSubscribeSubText = css`
   margin-bottom: 32px;
   text-align: center;
-`;
-
-const noSubscribeLink = css`
-  min-width: 164px;
 `;

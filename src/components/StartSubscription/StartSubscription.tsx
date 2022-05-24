@@ -91,4 +91,5 @@ const btnStyles = css`
   display: block;
   margin-top: 48px;
   width: 100%;
+  text-align: center;
 `;

@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({}) => {
         <ILink url="/">
           <LogoIcon />
         </ILink>
-        {userToken && (
+        {userToken ? (
           <UserContainer>
             <div>
               <ILink url={routes.SUBSCRIPTIONS}>My subscriptions</ILink>
@@ -68,6 +68,8 @@ const Header: React.FC<HeaderProps> = ({}) => {
               )}
             </ContainerRelative>
           </UserContainer>
+        ) : (
+          <ILink url={routes.REGISTRATION}>Sign In</ILink>
         )}
       </HeaderContainer>
     </Container>

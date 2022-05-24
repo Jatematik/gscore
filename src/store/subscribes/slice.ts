@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SubscribeProps } from "src/types";
+import { SubscribeCodeProps, SubscribeProps } from "src/types";
 import { subscribesThunks } from "./thunks";
-import { ActivateCodeProps, SubscribesState } from "./types";
+import { SubscribesState } from "./types";
 
 const initialState: SubscribesState = {
   subscribes: [],
@@ -13,7 +13,7 @@ const subscribesSlice = createSlice({
   reducers: {
     updateCode(
       state,
-      action: PayloadAction<{ id: number; code: ActivateCodeProps }>
+      action: PayloadAction<{ id: number; code: SubscribeCodeProps }>
     ) {
       state.subscribes.forEach((subscribe) => {
         if (subscribe.id === action.payload.id) {
@@ -27,6 +27,16 @@ const subscribesSlice = createSlice({
               code.userId = action.payload.code.userId;
             }
           });
+        }
+      });
+    },
+    setCodes(
+      state,
+      action: PayloadAction<{ id: number; codes: SubscribeCodeProps[] }>
+    ) {
+      state.subscribes.forEach((subscribe) => {
+        if (subscribe.id === action.payload.id) {
+          subscribe.codes = action.payload.codes;
         }
       });
     },
@@ -49,6 +59,6 @@ const subscribesSlice = createSlice({
   },
 });
 
-export const { updateCode } = subscribesSlice.actions;
+export const { updateCode, setCodes } = subscribesSlice.actions;
 
 export default subscribesSlice.reducer;

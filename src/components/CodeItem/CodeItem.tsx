@@ -1,4 +1,11 @@
-import React, { useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  InputHTMLAttributes,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import styled, { css } from "styled-components";
 
 import { colors } from "src/styles/colors";
@@ -14,7 +21,10 @@ import { transformText } from "src/utils";
 const CodeItem: React.FC<CodeItemProps> = ({
   item,
   subscribeCardId,
-  isActive,
+  onChange,
+  defaultChecked,
+  setCodesIds,
+  ...props
 }) => {
   const [checked, setChecked] = useState<boolean>(false);
   const [load, setLoad] = useState<boolean>(false);
@@ -42,6 +52,14 @@ const CodeItem: React.FC<CodeItemProps> = ({
       .finally(() => setLoad(false));
   };
 
+  useEffect(() => {
+    if (checked) {
+      setCodesIds((prev) => [...prev, item.id]);
+    } else {
+      setCodesIds((prev) => prev.filter((el) => el !== item.id));
+    }
+  }, [checked, item.id, setCodesIds]);
+
   return (
     <Container isActive={item.status}>
       <GridBox>
@@ -62,8 +80,12 @@ const CodeItem: React.FC<CodeItemProps> = ({
       <GridBox>
         <CheckBox
           isChecked={checked}
-          onChange={() => setChecked(!checked)}
-          disabled={isActive}
+          onChange={() => {
+            setChecked(!checked);
+          }}
+          disabled={item.status !== "HOLD"}
+          value={item.id}
+          {...props}
         />
       </GridBox>
       <GridBox>
@@ -79,7 +101,6 @@ const CodeItem: React.FC<CodeItemProps> = ({
             onClick={handleActivate}
             containerStyles={buttonStyles}
             loading={load}
-            disabled={isActive}
           >
             Activate
           </IButton>
@@ -104,10 +125,10 @@ const CodeItem: React.FC<CodeItemProps> = ({
   );
 };
 
-interface CodeItemProps {
+interface CodeItemProps extends InputHTMLAttributes<HTMLInputElement> {
   item: SubscribeCodeProps;
   subscribeCardId: number;
-  isActive: boolean;
+  setCodesIds: Dispatch<SetStateAction<number[]>>;
 }
 
 export default CodeItem;
@@ -125,35 +146,18 @@ const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
   grid-row-gap: 10px;
 
   ${({ isActive }) =>
-    isActive === statuses.ACTIVE
+    isActive === statuses.INACTIVE
       ? css`
-          grid-template-columns: 60px 296px 4fr 160px;
+          grid-template-columns: 60px 296px 3fr 1fr 160px;
         `
       : css`
-          grid-template-columns: 60px 296px 3fr 1fr 160px;
+          grid-template-columns: 60px 296px 4fr 160px;
         `}
 
   & > ${GridBox} {
     ${({ isActive }) =>
-      isActive === statuses.ACTIVE
+      isActive === statuses.INACTIVE
         ? css`
-            &:nth-child(1) {
-              grid-column: 2 / 3;
-            }
-            &:nth-child(2) {
-              grid-column: 3 / 4;
-            }
-            &:nth-child(3) {
-              grid-column: 4 / 5;
-            }
-            &:nth-child(4) {
-              align-self: center;
-            }
-            &:nth-child(7) {
-              align-self: center;
-            }
-          `
-        : css`
             &:nth-child(1) {
               grid-column: 2 / 3;
             }
@@ -173,6 +177,23 @@ const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
               align-items: center;
             }
             &:nth-child(8) {
+              align-self: center;
+            }
+          `
+        : css`
+            &:nth-child(1) {
+              grid-column: 2 / 3;
+            }
+            &:nth-child(2) {
+              grid-column: 3 / 4;
+            }
+            &:nth-child(3) {
+              grid-column: 4 / 5;
+            }
+            &:nth-child(4) {
+              align-self: center;
+            }
+            &:nth-child(7) {
               align-self: center;
             }
           `};

@@ -56,12 +56,12 @@ export interface SubscribeProps {
 export interface SubscribeCodeProps {
   id: number;
   code: string;
-  origin: string;
+  origin: string | null;
   status: "ACTIVE" | "INACTIVE" | "HOLD";
   subscribeId: number;
-  subscribe: string;
+  subscribe?: string;
   userId: number;
-  user: string;
+  user?: string;
 }
 
 export const statuses = {

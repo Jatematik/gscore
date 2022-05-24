@@ -40,14 +40,13 @@ const Checkout: React.FC<CheckoutProps> = ({
 
       Promise.all(requestArray)
         .then(() => {
-          setLoading(false);
           setPayment(true);
           dispatch(actions.cart.resetProduct());
         })
         .catch((e) => {
           console.warn(e);
-          setLoading(false);
-        });
+        })
+        .finally(() => setLoading(false));
     }
   };
 
@@ -102,6 +101,7 @@ const Checkout: React.FC<CheckoutProps> = ({
           containerStyles={btnStyles}
           onClick={handlePayment}
           loading={loading}
+          disabled={products.length === 0}
         >
           Purchase
         </IButton>

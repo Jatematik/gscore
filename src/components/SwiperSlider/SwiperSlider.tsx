@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import type { Swiper as SwiperType } from "swiper";
@@ -10,7 +10,10 @@ import { colors } from "src/styles/colors";
 import { IText } from "../../ui/IText";
 import { SubscribeProps } from "src/types";
 
-const SwiperSlider: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
+const SwiperSlider: React.FC<ISwiperProps> = ({
+  slides,
+  setSubscribeId,
+}): JSX.Element => {
   const [swiper, setSwiper] = useState<SwiperType>();
   const [count, setCount] = useState<number>(1);
   const prevRef = useRef(null);
@@ -38,7 +41,13 @@ const SwiperSlider: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
       >
         {slides.map((slide, i) => (
           <SwiperSlide key={i.toString()}>
-            {({ isActive }) => <Card active={isActive} card={slide} />}
+            {({ isActive }) => (
+              <Card
+                active={isActive}
+                card={slide}
+                setSubscribeId={setSubscribeId}
+              />
+            )}
           </SwiperSlide>
         ))}
 
@@ -71,6 +80,7 @@ const SwiperSlider: React.FC<ISwiperProps> = ({ slides }): JSX.Element => {
 
 interface ISwiperProps {
   slides: SubscribeProps[];
+  setSubscribeId: Dispatch<SetStateAction<number>>;
 }
 
 export default SwiperSlider;

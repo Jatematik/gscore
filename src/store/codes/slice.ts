@@ -23,23 +23,33 @@ const codesSlice = createSlice({
       state.codes = action.payload.codes;
       state.subscribeCardId = action.payload.id;
     },
+    resetCodes() {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      codesThunks.asyncActivateCode.fulfilled,
-      (state, action) => {
-        state.codes.forEach((item) => {
-          if (item.id === action.payload.id) {
-            item.status = action.payload.status;
-            item.code = action.payload.code;
-            item.origin = action.payload.origin;
-          }
-        });
-      }
-    );
+    builder
+      .addCase(
+        codesThunks.asyncActivateCode.fulfilled,
+        (state, action: PayloadAction<SubscribeCodeProps>) => {
+          state.codes.forEach((item) => {
+            if (item.id === action.payload.id) {
+              item.status = action.payload.status;
+              item.code = action.payload.code;
+              item.origin = action.payload.origin;
+            }
+          });
+        }
+      )
+      .addCase(
+        codesThunks.asyncManageSelfCodes.fulfilled,
+        (state, action: PayloadAction<SubscribeCodeProps[]>) => {
+          state.codes = action.payload;
+        }
+      );
   },
 });
 
-export const { setCodes } = codesSlice.actions;
+export const { setCodes, resetCodes } = codesSlice.actions;
 
 export default codesSlice.reducer;

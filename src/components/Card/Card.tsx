@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import styled, { css } from "styled-components";
 
 import { colors } from "src/styles/colors";
 import { IButton } from "src/ui/IButton";
 import { IText } from "src/ui/IText";
 import { Accordion } from "../Accordion";
-import { SubscribeProps } from "src/types";
+import { statuses, SubscribeProps } from "src/types";
 import { useAppDispatch } from "src/store/hooks";
 import { actions } from "src/store/ducks";
+import { transformText } from "src/utils";
 
-const Card: React.FC<CardProps> = ({ active, card }) => {
+const Card: React.FC<CardProps> = ({ active, card, setSubscribeId }) => {
   const date = new Date(parseInt(`${card.currentPeriodEnd}000`, 10));
   const dispatch = useAppDispatch();
 
@@ -22,6 +23,10 @@ const Card: React.FC<CardProps> = ({ active, card }) => {
     );
   };
 
+  useEffect(() => {
+    if (active) setSubscribeId(card.codes[0].subscribeId);
+  }, [active, card.codes, setSubscribeId]);
+
   return (
     <Accordion
       header={
@@ -29,8 +34,18 @@ const Card: React.FC<CardProps> = ({ active, card }) => {
           <IText as="span" containerStyles={headerStyles}>
             Package name
           </IText>
-          <IText as="span" containerStyles={headerStyles}>
-            Price
+          <IText
+            as="span"
+            containerStyles={[
+              headerStyles,
+              card.status === statuses.ACTIVE
+                ? activeStyles
+                : card.status === statuses.INACTIVE
+                ? inactiveStyles
+                : holdStyles,
+            ]}
+          >
+            {transformText(card.status)}
           </IText>
         </>
       }
@@ -65,6 +80,7 @@ const Card: React.FC<CardProps> = ({ active, card }) => {
 interface CardProps {
   active?: boolean;
   card: SubscribeProps;
+  setSubscribeId: Dispatch<SetStateAction<number>>;
 }
 
 export default Card;
@@ -115,4 +131,16 @@ const buttonStyles = css`
 
 const nonActiveStyles = css`
   opacity: 0.6;
+`;
+
+const activeStyles = css`
+  color: ${colors.green300};
+`;
+
+const inactiveStyles = css`
+  color: ${colors.red300};
+`;
+
+const holdStyles = css`
+  color: ${colors.orange300};
 `;

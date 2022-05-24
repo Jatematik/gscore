@@ -31,7 +31,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
 };
 
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {
-  isChecked: boolean;
+  isChecked: boolean | undefined;
   label?: string;
   containerStyles?: CSSProp;
 }
@@ -75,7 +75,7 @@ const HiddenCheckbox = styled.input`
   width: 1px;
 `;
 
-const StyledCheckbox = styled.div<{ checked: boolean }>`
+const StyledCheckbox = styled.div<{ checked: boolean | undefined }>`
   width: 28px;
   height: 28px;
   background: ${({ checked }) => (checked ? colors.primary : colors.white)};

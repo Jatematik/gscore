@@ -13,7 +13,7 @@ import {
   oneSiteBenefits,
   sevenSitesBenefits,
   threeSitesBenefits,
-} from "./static";
+} from "../../types/static";
 import { IButton } from "src/ui/IButton";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { actions, selectors } from "src/store/ducks";

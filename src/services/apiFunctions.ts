@@ -26,11 +26,17 @@ const products = {
     httpClient.post("/api/payments/buy", data),
 
   getSubscribes: () => httpClient.get("/api/subscribe/self"),
+
+  changeSubscribe: (data: { productId: number; subscribeId: number }) =>
+    httpClient.post("/api/subscribe/change-product", data),
 };
 
 const codes = {
   activateCode: (data: { code: string }) =>
     httpClient.post("api/code/activate", data),
+
+  manageSelfCodes: (data: { codesIds: number[]; subscribeId: number }) =>
+    httpClient.put("/api/code/manage", data),
 };
 
 export const apiRequests = {
