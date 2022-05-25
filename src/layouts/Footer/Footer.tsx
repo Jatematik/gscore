@@ -1,14 +1,14 @@
-import React from 'react';
-import FacebookIcon from 'src/assets/icons/FacebookIcon';
-import LinkedInIcon from 'src/assets/icons/LinkedInIcon';
-import LogoIcon from 'src/assets/icons/LogoIcon';
-import TwitterIcon from 'src/assets/icons/TwitterIcon';
-import Container from 'src/layouts/Container/Container';
-import { colors } from 'src/styles/colors';
-import { ILink } from 'src/ui/ILink';
-import { IText } from 'src/ui/IText';
-import { Line } from 'src/ui/Line';
-import styled, { css } from 'styled-components';
+import React from "react";
+import FacebookIcon from "src/assets/icons/FacebookIcon";
+import LinkedInIcon from "src/assets/icons/LinkedInIcon";
+import LogoIcon from "src/assets/icons/LogoIcon";
+import TwitterIcon from "src/assets/icons/TwitterIcon";
+import Container from "src/layouts/Container/Container";
+import { colors } from "src/styles/colors";
+import { ILink } from "src/ui/ILink";
+import { IText } from "src/ui/IText";
+import { Line } from "src/ui/Line";
+import styled, { css } from "styled-components";
 
 const Footer: React.FC<FooterProps> = ({}) => {
   return (
@@ -69,6 +69,9 @@ const textStyles = css`
 const linkStyles = css`
   display: inline-block;
   margin-bottom: 24px;
+  &::before {
+    content: none;
+  }
 `;
 
 const lineColor = css`
@@ -77,6 +80,9 @@ const lineColor = css`
 
 const socialLinkStyles = css`
   margin-left: 16px;
+  &::before {
+    content: none;
+  }
 `;
 
 export default Footer;

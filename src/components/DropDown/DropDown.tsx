@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import React from 'react';
-import { colors } from 'src/styles/colors';
-import { ILink } from 'src/ui/ILink';
-import styled, { css } from 'styled-components';
+import React from "react";
+import styled, { css } from "styled-components";
+
+import { colors } from "src/styles/colors";
+import { ILink } from "src/ui/ILink";
 
 const DropDown: React.FC<DropDownProps> = ({ items }) => {
   return (
@@ -77,6 +77,9 @@ const TextSpan = styled.span`
 const linkStyles = css`
   display: flex;
   align-items: center;
+  &:hover::before {
+    content: none;
+  }
 `;
 
 export default DropDown;

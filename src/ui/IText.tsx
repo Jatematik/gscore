@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
-import styled, { CSSProp } from 'styled-components';
+import React, { HTMLAttributes, ReactNode } from "react";
+import styled, { CSSProp } from "styled-components";
 
 export const IText: React.FC<ITextProps> = ({
   children,
   containerStyles = {},
-  as = 'p',
+  as = "p",
   ...props
 }) => {
   return (
@@ -14,10 +14,10 @@ export const IText: React.FC<ITextProps> = ({
   );
 };
 
-interface ITextProps {
+interface ITextProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
   containerStyles?: CSSProp;
-  as?: 'span' | 'p';
+  as?: "span" | "p";
 }
 
 const Text = styled.p<{ $CSS?: CSSProp }>`

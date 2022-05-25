@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
-import styled, { CSSProp } from 'styled-components';
+import React, { ReactNode } from "react";
+import styled, { CSSProp } from "styled-components";
 
 export const ITitle: React.FC<ITitleProps> = ({
   children,
-  as = 'h1',
+  as = "h1",
   containerStyles = {},
   ...props
 }) => {
@@ -17,7 +17,7 @@ export const ITitle: React.FC<ITitleProps> = ({
 interface ITitleProps {
   children: ReactNode;
   containerStyles?: CSSProp;
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
 
 const Title = styled.h1<{ $CSS?: CSSProp }>`
@@ -25,5 +25,16 @@ const Title = styled.h1<{ $CSS?: CSSProp }>`
   font-size: 44px;
   line-height: 54px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 34px;
+    line-height: 44px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
   ${({ $CSS }) => $CSS}
 `;

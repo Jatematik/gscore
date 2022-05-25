@@ -17,7 +17,24 @@ const MainContainer = styled.div<{ $CSS?: CSSProp }>`
   margin: auto;
   max-width: 1266px;
 
-  ${({ $CSS }) => $CSS}
+  @media (max-width: 1300px) {
+    max-width: 960px;
+  }
+
+  @media (max-width: 992px) {
+    max-width: 720px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 540px;
+  }
+
+  @media (max-width: 576px) {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  ${({ $CSS }) => $CSS};
 `;
 
 export default Container;

@@ -41,6 +41,15 @@ const CardContainer = styled.div`
   justify-content: space-between;
   padding-top: 98px;
   padding-bottom: 32px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 576px) {
+    padding: 32px 10px;
+  }
 `;
 
 const FlexBlock = styled.div`
@@ -51,9 +60,11 @@ const FlexBlock = styled.div`
 
 const linkStyles = css`
   font-size: 18px;
-  line-height: 30px;
-  text-decoration: underline;
+  line-height: 22px;
   color: ${colors.primary};
+  &:hover::before {
+    background-color: ${colors.primary};
+  }
 `;
 
 const containerStyles = css`

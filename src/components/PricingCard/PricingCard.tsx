@@ -58,9 +58,11 @@ const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
         {product.sitesCount === 1
           ? oneSiteBenefits.map((item) => (
               <ListItem key={item}>
-                <MarkerIcon
-                  checkColor={active ? colors.primary : colors.black27}
-                />
+                <MarkerContainer>
+                  <MarkerIcon
+                    checkColor={active ? colors.primary : colors.black27}
+                  />
+                </MarkerContainer>
                 <IText as="span" containerStyles={textStyles}>
                   {item}
                 </IText>
@@ -69,9 +71,11 @@ const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
           : product.sitesCount === 3
           ? threeSitesBenefits.map((item) => (
               <ListItem key={item}>
-                <MarkerIcon
-                  checkColor={active ? colors.primary : colors.black27}
-                />
+                <MarkerContainer>
+                  <MarkerIcon
+                    checkColor={active ? colors.primary : colors.black27}
+                  />
+                </MarkerContainer>
                 <IText as="span" containerStyles={textStyles}>
                   {item}
                 </IText>
@@ -79,21 +83,17 @@ const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
             ))
           : sevenSitesBenefits.map((item) => (
               <ListItem key={item}>
-                <MarkerIcon
-                  checkColor={active ? colors.primary : colors.black27}
-                />
+                <MarkerContainer>
+                  <MarkerIcon
+                    checkColor={active ? colors.primary : colors.black27}
+                  />
+                </MarkerContainer>
                 <IText as="span" containerStyles={textStyles}>
                   {item}
                 </IText>
               </ListItem>
             ))}
       </ListContainer>
-      {/* <ILink
-        url={routes.REGISTRATION}
-        containerStyles={[linkStyles, active ? `color: ${activeColor}` : {}]}
-      >
-        Get Gscore
-      </ILink> */}
       <IButton
         btnType="secondary"
         containerStyles={active ? {} : nonActiveBtn}
@@ -120,6 +120,32 @@ const Container = styled.div<{ $active?: boolean }>`
   border-radius: 12px;
   width: 404px;
   ${({ $active }) => $active && `transform: translateY(-50px);`}
+
+  @media (max-width: 1300px) {
+    flex-basis: 32%;
+    padding: 28px;
+  }
+
+  @media (max-width: 768px) {
+    flex-basis: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    ${({ $active }) => $active && `transform: translateY(0);`}
+  }
+
+  @media (max-width: 576px) {
+    flex-basis: 100%;
+  }
+`;
+
+const MarkerContainer = styled.div`
+  width: 27px;
+  height: 27px;
 `;
 
 const Price = styled(IText)`
@@ -129,6 +155,11 @@ const Price = styled(IText)`
   font-size: 54px;
   line-height: 66px;
   text-align: center;
+
+  @media (max-width: 992px) {
+    font-size: 40px;
+    line-height: 56px;
+  }
 `;
 
 const ListContainer = styled.ul`
@@ -142,20 +173,6 @@ const ListItem = styled.li`
   &:last-child {
     margin-bottom: 0;
   }
-`;
-
-const linkStyles = css`
-  margin-top: auto;
-  padding: 26px 0;
-  display: block;
-  text-align: center;
-  box-shadow: 0px 8px 28px rgb(0 0 0 / 6%);
-  border-radius: 6px;
-  background-color: ${colors.white};
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 20px;
-  color: ${colors.black18};
 `;
 
 const nonActiveBtn = css`

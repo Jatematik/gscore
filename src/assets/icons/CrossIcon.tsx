@@ -1,25 +1,30 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import { colors } from "src/styles/colors";
-import styled from "styled-components";
+import styled, { CSSProp } from "styled-components";
 
-const CrossIcon: React.FC = (): JSX.Element => {
+const CrossIcon: React.FC<CrossIconProps> = ({
+  containerStyles = {},
+  ...props
+}): JSX.Element => {
   return (
-    <Circle>
+    <Flex $CSS={containerStyles} {...props}>
       <Cross />
-    </Circle>
+    </Flex>
   );
 };
 
+interface CrossIconProps extends HTMLAttributes<HTMLDivElement> {
+  containerStyles?: CSSProp;
+}
+
 export default CrossIcon;
 
-const Circle = styled.div`
+const Flex = styled.div<{ $CSS?: CSSProp }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background-color: ${colors.black700};
+
+  ${({ $CSS }) => $CSS}
 `;
 
 const Cross = styled.div`

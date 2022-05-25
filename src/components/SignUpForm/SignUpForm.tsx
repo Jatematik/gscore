@@ -34,7 +34,7 @@ const SignUpForm: React.FC = () => {
     setLoading(true);
     apiRequests.user
       .signUp(data)
-      .then((res) => {
+      .then(() => {
         router.push(routes.LOGIN);
       })
       .catch((e) => {
@@ -180,8 +180,8 @@ const linkStyles = css`
   font-size: 16px;
   line-height: 18px;
   color: ${colors.primary};
-  &:hover {
-    text-decoration: underline;
+  &:hover::before {
+    background-color: ${colors.primary};
   }
 `;
 

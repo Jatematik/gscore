@@ -5,11 +5,15 @@ import CrossIcon from "src/assets/icons/CrossIcon";
 import { IText } from "./IText";
 import Container from "src/layouts/Container/Container";
 import { ILink } from "./ILink";
+import { colors } from "src/styles/colors";
 
 export const NoContentSubscribe: React.FC = (): JSX.Element => {
   return (
     <Container containerStyles={noSubscribeContainerStyles}>
-      <CrossIcon />
+      <Circle>
+        <CrossIcon />
+      </Circle>
+
       <IText containerStyles={noSubscribeText}>No active subscriptions</IText>
       <IText containerStyles={noSubscribeSubText}>
         You can subscribe right now by clicking on the button below
@@ -25,6 +29,16 @@ export const NoContentSubscribe: React.FC = (): JSX.Element => {
     </Container>
   );
 };
+
+const Circle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: ${colors.black700};
+`;
 
 const noSubscribeContainerStyles = css`
   padding: 100px 0;
