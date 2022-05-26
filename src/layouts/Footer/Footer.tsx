@@ -22,10 +22,10 @@ const Footer: React.FC<FooterProps> = ({}) => {
         </IText>
         <Line containerStyles={lineColor} />
         <BottomContainer>
-          <p>
+          <IText containerStyles={copyrightStyles}>
             Copyright © 2022 GScore | All Rights Reserved | Cookies | Privacy
             Policy
-          </p>
+          </IText>
           <SocialContainer>
             <ILink url="/" containerStyles={socialLinkStyles}>
               <FacebookIcon />
@@ -55,10 +55,18 @@ const BottomContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
 `;
 
 const SocialContainer = styled.div`
   display: flex;
+
+  @media (max-width: 576px) {
+    margin-top: 24px;
+  }
 `;
 
 const textStyles = css`
@@ -78,10 +86,20 @@ const lineColor = css`
   background-color: ${colors.black700};
 `;
 
+const copyrightStyles = css`
+  @media (max-width: 576px) {
+    text-align: center;
+  }
+`;
+
 const socialLinkStyles = css`
   margin-left: 16px;
   &::before {
     content: none;
+  }
+
+  @media (max-width: 576px) {
+    margin: 0 8px;
   }
 `;
 

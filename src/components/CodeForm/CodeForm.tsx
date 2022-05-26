@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Container from "src/layouts/Container/Container";
-import { apiRequests } from "src/services/apiFunctions";
 import { errorRequestMessage } from "src/services/toastFunctions";
 import { actions, selectors, thunks } from "src/store/ducks";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
@@ -43,52 +42,64 @@ const CodeForm: React.FC = () => {
   };
 
   return (
-    <Container>
+    <>
       {codes.length > 0 && (
-        <>
-          {codes.map((item) => (
-            <CodeItem
-              key={item.id.toString()}
-              item={item}
-              subscribeCardId={subscribeCardId}
-              setCodesIds={setCodesIds}
-            />
-          ))}
-          <ConfirmContainer>
-            <IText containerStyles={confirmStyles}>
-              Select the domains you want to keep
-            </IText>
-            <IButton
-              onClick={submit}
-              disabled={codesIds.length === 0}
-              loading={load}
-              containerStyles={btnStyles}
-            >
-              Confirm
-            </IButton>
-          </ConfirmContainer>
-        </>
+        <Container>
+          <FlexBox>
+            {codes.map((item) => (
+              <CodeItem
+                key={item.id.toString()}
+                item={item}
+                subscribeCardId={subscribeCardId}
+                setCodesIds={setCodesIds}
+              />
+            ))}
+            {codes[0].status === "HOLD" && (
+              <>
+                <IText containerStyles={confirmStyles}>
+                  Select the domains you want to keep
+                </IText>
+                <IButton
+                  onClick={submit}
+                  disabled={codesIds.length === 0}
+                  loading={load}
+                  containerStyles={btnStyles}
+                >
+                  Confirm
+                </IButton>
+              </>
+            )}
+          </FlexBox>
+        </Container>
       )}
       <IToast />
-    </Container>
+    </>
   );
 };
 
 export default CodeForm;
 
-const ConfirmContainer = styled.div`
-  padding-bottom: 30px;
+const FlexBox = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const confirmStyles = css`
   font-weight: 700;
   font-size: 20px;
   line-height: 22px;
+  @media (max-width: 768px) {
+    order: -1;
+    margin-bottom: 28px;
+  }
 `;
 
 const btnStyles = css`
+  margin-bottom: 30px;
   min-width: 148px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;

@@ -42,6 +42,10 @@ interface StepTabsProps {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 
 const TabWrapper = styled.div`

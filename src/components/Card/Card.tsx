@@ -93,6 +93,10 @@ const FlexContainer = styled.div`
   display: flex;
   flex-grow: 1;
   margin-bottom: 12px;
+
+  @media (max-width: 576px) {
+    margin-bottom: 4px;
+  }
 `;
 
 const headerStyles = css`
@@ -102,6 +106,11 @@ const headerStyles = css`
   flex-basis: 85%;
   &:last-child {
     flex-basis: 15%;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 20px;
+    line-height: 22px;
   }
 `;
 
@@ -115,6 +124,10 @@ const bodyStyles = css`
     align-items: center;
     justify-content: space-between;
   }
+  @media (max-width: 576px) {
+    font-size: 18px;
+    line-height: 30px;
+  }
 `;
 
 const dateValidStyles = css`
@@ -123,6 +136,9 @@ const dateValidStyles = css`
   font-size: 16px;
   line-height: 18px;
   color: ${colors.gray500};
+  @media (max-width: 576px) {
+    margin-bottom: 24px;
+  }
 `;
 
 const buttonStyles = css`

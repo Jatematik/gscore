@@ -58,6 +58,10 @@ export default StartSubscription;
 
 const Container = styled.div`
   padding: 64px 0;
+
+  @media (max-width: 576px) {
+    padding: 32px 0;
+  }
 `;
 
 const Box = styled.div`
@@ -73,6 +77,10 @@ const headerStyles = css`
   flex-basis: 85%;
   &:last-child {
     flex-basis: 15%;
+  }
+  @media (max-width: 576px) {
+    font-size: 20px;
+    line-height: 22px;
   }
 `;
 

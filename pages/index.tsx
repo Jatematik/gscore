@@ -42,7 +42,7 @@ const CardContainer = styled.div`
   padding-top: 98px;
   padding-bottom: 32px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     padding-top: 40px;
     flex-wrap: wrap;
   }

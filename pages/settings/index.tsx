@@ -78,4 +78,9 @@ const containerStyles = css`
 
 const titleStyles = css`
   text-align: start;
+
+  @media (max-width: 576px) {
+    font-size: 28px;
+    line-height: 40px;
+  }
 `;

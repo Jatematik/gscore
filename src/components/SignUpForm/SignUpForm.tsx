@@ -152,6 +152,10 @@ export default SignUpForm;
 
 const Container = styled.div`
   padding: 64px 0;
+
+  @media (max-width: 576px) {
+    padding: 32px 0;
+  }
 `;
 
 const NextStep = styled.div`

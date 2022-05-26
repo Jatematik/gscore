@@ -52,6 +52,10 @@ export default Tabs;
 const Box = styled.div`
   margin: 48px 0;
   display: flex;
+
+  @media (max-width: 576px) {
+    margin: 28px 0;
+  }
 `;
 
 const Tab = styled.div<{ active: boolean }>`
@@ -66,12 +70,16 @@ const Tab = styled.div<{ active: boolean }>`
 `;
 
 const titleStyles = css`
+  display: flex;
+  text-align: center;
   line-height: 20px;
   font-weight: 700;
   color: ${colors.black700};
 `;
 
 const activeTitleStyles = css`
+  display: flex;
+  text-align: center;
   line-height: 20px;
   font-weight: 700;
   color: ${colors.primary};

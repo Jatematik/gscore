@@ -119,6 +119,10 @@ export default Checkout;
 
 const Container = styled.div`
   padding: 64px 0;
+
+  @media (max-width: 576px) {
+    padding: 32px 0;
+  }
 `;
 
 const Box = styled.div`
@@ -131,6 +135,10 @@ const Wrapper = styled.div`
   margin: 24px 0 48px;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 576px) {
+    margin: 20px 0 24px;
+  }
 `;
 
 const titleStyles = css`
@@ -142,10 +150,19 @@ const textStyles = css`
   font-weight: 700;
   font-size: 28px;
   line-height: 40px;
+
+  @media (max-width: 576px) {
+    font-size: 20px;
+    line-height: 22px;
+  }
 `;
 
 const btnStyles = css`
   min-width: 200px;
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 `;
 
 const headerStyles = css`
@@ -155,5 +172,9 @@ const headerStyles = css`
   flex-basis: 85%;
   &:last-child {
     flex-basis: 15%;
+  }
+  @media (max-width: 576px) {
+    font-size: 20px;
+    line-height: 22px;
   }
 `;

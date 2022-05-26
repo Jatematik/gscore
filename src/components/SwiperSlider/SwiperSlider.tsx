@@ -23,20 +23,26 @@ const SwiperSlider: React.FC<ISwiperProps> = ({
     <ContainerSwiper>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={28}
+        spaceBetween={15}
         loop={false}
         navigation={{
           prevEl: prevRef?.current,
           nextEl: nextRef?.current,
         }}
-        slidesPerView={2}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 28,
+          },
+        }}
+        slidesPerView={1}
         speed={1000}
-        style={swiperStyles}
         observer
         observeParents
         onSlideChange={(slide) => {
           setCount(slide.realIndex + 1);
         }}
+        className="swiper-slider"
         onSwiper={(swiper) => setSwiper(swiper)}
       >
         {slides.map((slide, i) => (
@@ -54,7 +60,7 @@ const SwiperSlider: React.FC<ISwiperProps> = ({
         <SwiperSlide></SwiperSlide>
       </Swiper>
 
-      <NavigationContainer>
+      <div className="swiper-navigation">
         <Arrow ref={prevRef} nonactive={count === 1}>
           <ArrowIcon
             way="left"
@@ -73,7 +79,7 @@ const SwiperSlider: React.FC<ISwiperProps> = ({
             color={count === slides.length ? colors.black700 : colors.white}
           />
         </Arrow>
-      </NavigationContainer>
+      </div>
     </ContainerSwiper>
   );
 };
@@ -89,13 +95,6 @@ const ContainerSwiper = styled.div`
   overflow: hidden;
 `;
 
-const NavigationContainer = styled.div`
-  display: flex;
-  align-items: center;
-  max-width: 1266px;
-  margin: 24px auto 32px;
-`;
-
 const Arrow = styled.div<{ nonactive: boolean }>`
   display: flex;
   justify-content: center;
@@ -107,6 +106,10 @@ const Arrow = styled.div<{ nonactive: boolean }>`
 
   ${({ nonactive }) =>
     nonactive && `border: 1px solid ${colors.black700}; cursor: initial;`}
+
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 
 const CountContainer = styled.div`
@@ -122,9 +125,3 @@ const countStyles = css`
   font-size: 22px;
   line-height: 28px;
 `;
-
-const swiperStyles = {
-  maxWidth: 1266,
-  margin: "auto",
-  overflow: "initial",
-};

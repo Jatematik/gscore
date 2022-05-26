@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { css } from "styled-components";
+import { useMediaQuery } from "react-responsive";
 import * as cookie from "cookie";
 
 import Container from "src/layouts/Container/Container";
@@ -19,6 +20,9 @@ import { CodeForm } from "src/components/CodeForm";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
+  const isMobile = useMediaQuery({
+    query: "(max-width: 576px)",
+  });
 
   const [openUpgrade, setOpenUpgrade] = useState<boolean>(false);
   const [subscribeId, setSubscribeId] = useState<number>(0);
@@ -53,7 +57,11 @@ const Subscriptions: NextPage = () => {
             <>
               <Container containerStyles={containerStyles}>
                 <ITitle containerStyles={titleStyles}>My subscribtions</ITitle>
-                <IButton containerStyles={buttonStyles} onClick={handleUpgrade}>
+                <IButton
+                  containerStyles={buttonStyles}
+                  onClick={handleUpgrade}
+                  btnType={isMobile ? "text" : "primary"}
+                >
                   Upgrade
                 </IButton>
               </Container>
@@ -110,6 +118,10 @@ const titleStyles = css`
 
 const buttonStyles = css`
   min-width: 152px;
+
+  @media (max-width: 576px) {
+    min-width: auto;
+  }
 `;
 
 const containerStyles = css`

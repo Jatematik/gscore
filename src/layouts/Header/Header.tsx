@@ -15,14 +15,15 @@ import Container from "../Container/Container";
 import { BurgerMenu } from "src/ui/BurgerMenu";
 import { Drawer } from "src/components/Drawer";
 
-const Header: React.FC<HeaderProps> = ({}) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  const [userToken, setUserToken] = useState<string>();
+const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectors.user.selectUser);
   const token = useAppSelector(selectors.user.selectToken);
+
   const ref = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [userToken, setUserToken] = useState<string>();
 
   const handleOpen = () => setOpen(!open);
 
@@ -86,8 +87,6 @@ const Header: React.FC<HeaderProps> = ({}) => {
     </HeaderContainer>
   );
 };
-
-interface HeaderProps {}
 
 const HeaderContainer = styled.header`
   padding: 32px 0;

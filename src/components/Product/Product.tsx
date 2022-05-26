@@ -70,4 +70,11 @@ const bodyStyles = css`
     align-items: center;
     justify-content: space-between;
   }
+  @media (max-width: 576px) {
+    &:last-child {
+      min-width: 70px;
+    }
+    font-size: 18px;
+    line-height: 30px;
+  }
 `;

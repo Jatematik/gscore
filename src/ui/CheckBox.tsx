@@ -84,15 +84,22 @@ const StyledCheckbox = styled.div<{ checked: boolean | undefined }>`
   border-radius: 7px;
   transition: all 150ms;
 
-  ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 4px rgb(252 88 66 / 30%);
-  }
-
-  /* ${HiddenCheckbox}:hover + & {
+  ${HiddenCheckbox}:hover + & {
     background: ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
     border: 1px solid
       ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
-  } */
+  }
+
+  ${HiddenCheckbox}:focus + & {
+    ${({ checked }) =>
+      checked
+        ? css`
+            box-shadow: 0 0 0 4px rgb(252 88 66 / 30%);
+          `
+        : css`
+            box-shadow: 0px 2px 6px rgba(20, 20, 43, 0.06);
+          `}
+  }
 
   ${HiddenCheckbox}:disabled + & {
     opacity: 0.5;

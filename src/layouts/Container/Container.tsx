@@ -31,7 +31,7 @@ const MainContainer = styled.div<{ $CSS?: CSSProp }>`
 
   @media (max-width: 576px) {
     max-width: 100%;
-    padding: 0 10px;
+    padding: 10px 16px;
   }
 
   ${({ $CSS }) => $CSS};

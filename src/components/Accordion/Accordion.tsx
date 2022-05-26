@@ -31,6 +31,10 @@ const Container = styled.div<{ $CSS?: CSSProp }>`
   border-radius: 12px;
   background-color: ${colors.black27};
 
+  @media (max-width: 576px) {
+    padding: 32px 0;
+  }
+
   ${({ $CSS }) => $CSS}
 `;
 
@@ -41,4 +45,8 @@ const Wrapper = styled.div`
 
 const lineStyles = css`
   margin: 32px 0;
+
+  @media (max-width: 576px) {
+    margin: 24px 0;
+  }
 `;

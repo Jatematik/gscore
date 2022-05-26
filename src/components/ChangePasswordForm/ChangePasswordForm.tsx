@@ -106,6 +106,11 @@ export default ChangePasswordForm;
 
 const Container = styled.div`
   width: 512px;
+
+  @media (max-width: 576px) {
+    width: 100%;
+    padding-bottom: 20px;
+  }
 `;
 
 const titleStyles = css`
@@ -113,6 +118,16 @@ const titleStyles = css`
   line-height: 40px;
   text-align: start;
   margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 22px;
+    line-height: 28px;
+  }
 `;
 
 const buttonStyles = css`

@@ -92,6 +92,7 @@ const Button = styled.button<ButtonProps>`
       : css`
           color: ${colors.primary};
           background-color: transparent;
+          padding: 0;
           &:hover {
             color: ${colors.red400};
           }

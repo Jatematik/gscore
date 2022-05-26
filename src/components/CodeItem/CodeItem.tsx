@@ -60,6 +60,10 @@ const CodeItem: React.FC<CodeItemProps> = ({
     }
   }, [checked, item.id, setCodesIds]);
 
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
   return (
     <Container isActive={item.status}>
       <GridBox>
@@ -80,9 +84,7 @@ const CodeItem: React.FC<CodeItemProps> = ({
       <GridBox>
         <CheckBox
           isChecked={checked}
-          onChange={() => {
-            setChecked(!checked);
-          }}
+          onChange={handleCheckboxChange}
           disabled={item.status !== "HOLD"}
           value={item.id}
           {...props}
@@ -140,6 +142,7 @@ const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
   margin-bottom: 32px;
   background-color: ${colors.black27};
   border-radius: 12px;
+  flex-basis: 100%;
 
   display: grid;
   grid-column-gap: 35px;
@@ -197,6 +200,101 @@ const Container = styled.div<{ isActive: "ACTIVE" | "INACTIVE" | "HOLD" }>`
               align-self: center;
             }
           `};
+  }
+
+  @media (max-width: 1300px) {
+    ${({ isActive }) =>
+      isActive === statuses.INACTIVE
+        ? css`
+            grid-template-columns: auto;
+          `
+        : css`
+            grid-template-columns: auto;
+          `}
+  }
+
+  @media (max-width: 768px) {
+    ${({ isActive }) =>
+      isActive === statuses.INACTIVE
+        ? css`
+            grid-column-gap: 20px;
+            grid-row-gap: 0;
+            grid-template-columns: 0fr 1fr 1fr;
+          `
+        : css`
+            grid-column-gap: 20px;
+            grid-row-gap: 0;
+            grid-template-columns: 0fr 1fr;
+          `}
+
+    & > ${GridBox} {
+      ${({ isActive }) =>
+        isActive === statuses.INACTIVE
+          ? css`
+              &:nth-child(1) {
+                margin-top: 8px;
+                grid-column: 1/4;
+              }
+              &:nth-child(2) {
+                grid-column: 1/4;
+              }
+              &:nth-child(3) {
+                display: none;
+              }
+              &:nth-child(4) {
+                grid-column: auto;
+                grid-row: 1;
+              }
+              &:nth-child(5) {
+                margin-bottom: 24px;
+                grid-row: 3;
+                grid-column: 1/4;
+              }
+              &:nth-child(6) {
+                grid-row: 5;
+                grid-column: 1/4;
+              }
+              &:nth-child(7) {
+                grid-row: 1;
+                grid-column: 3/4;
+                align-self: end;
+                justify-content: end;
+              }
+              &:nth-child(8) {
+                grid-column: auto;
+                grid-row: 1;
+              }
+            `
+          : css`
+              &:nth-child(1) {
+                margin-top: 8px;
+                grid-column: 1/3;
+              }
+              &:nth-child(2) {
+                grid-column: 1/3;
+              }
+              &:nth-child(3) {
+                display: none;
+              }
+              &:nth-child(4) {
+                grid-column: auto;
+                grid-row: 1;
+              }
+              &:nth-child(5) {
+                margin-bottom: 24px;
+                grid-row: 3;
+                grid-column: 1/3;
+              }
+              &:nth-child(6) {
+                grid-row: 5;
+                grid-column: 1/3;
+              }
+              &:nth-child(7) {
+                grid-column: auto;
+                grid-row: 1;
+              }
+            `};
+    }
   }
 `;
 

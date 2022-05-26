@@ -53,7 +53,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ active, product }) => {
         Get the advanced WordPress plugin that optimizes content with GSC
         keywords at one low annual price
       </IText>
-      <Line containerStyles={active ? lineStyles : {}} />
+      <Line containerStyles={active ? lineStyles : lineMedia} />
       <ListContainer>
         {product.sitesCount === 1
           ? oneSiteBenefits.map((item) => (
@@ -126,8 +126,8 @@ const Container = styled.div<{ $active?: boolean }>`
     padding: 28px;
   }
 
-  @media (max-width: 768px) {
-    flex-basis: 80%;
+  @media (max-width: 992px) {
+    flex-basis: 60%;
     margin: auto;
     margin-bottom: 20px;
 
@@ -138,8 +138,16 @@ const Container = styled.div<{ $active?: boolean }>`
     ${({ $active }) => $active && `transform: translateY(0);`}
   }
 
+  @media (max-width: 768px) {
+    flex-basis: 80%;
+  }
+
   @media (max-width: 576px) {
     flex-basis: 100%;
+  }
+
+  @media (max-width: 400px) {
+    padding: 10px 16px;
   }
 `;
 
@@ -198,6 +206,16 @@ const descStyles = css`
 
 const lineStyles = css`
   background-color: ${colors.white};
+
+  @media (max-width: 576px) {
+    margin: 20px 0;
+  }
+`;
+
+const lineMedia = css`
+  @media (max-width: 576px) {
+    margin: 20px 0;
+  }
 `;
 
 export default PricingCard;

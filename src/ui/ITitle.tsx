@@ -25,6 +25,7 @@ const Title = styled.h1<{ $CSS?: CSSProp }>`
   font-size: 44px;
   line-height: 54px;
   text-align: center;
+  margin-right: 10px;
 
   @media (max-width: 768px) {
     font-size: 34px;
