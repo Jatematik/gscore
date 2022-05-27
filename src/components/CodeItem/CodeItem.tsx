@@ -17,6 +17,7 @@ import { IButton } from "src/ui/IButton";
 import { useAppDispatch } from "src/store/hooks";
 import { actions, thunks } from "src/store/ducks";
 import { transformText } from "src/utils";
+import { errorRequestMessage } from "src/services/toastFunctions";
 
 const CodeItem: React.FC<CodeItemProps> = ({
   item,
@@ -48,7 +49,9 @@ const CodeItem: React.FC<CodeItemProps> = ({
           })
         );
       })
-      .catch((e) => console.warn(e))
+      .catch((e) => {
+        errorRequestMessage(e);
+      })
       .finally(() => setLoad(false));
   };
 

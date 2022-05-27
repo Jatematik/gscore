@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { SVGProps } from 'react';
+import * as React from "react";
+import { SVGProps } from "react";
 
-import { colors } from 'src/styles/colors';
+import { colors } from "src/styles/colors";
 
 const LoaderIcon = ({ color = colors.primary, ...props }: LoaderIconProps) => (
   <svg

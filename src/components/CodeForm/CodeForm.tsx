@@ -36,7 +36,7 @@ const CodeForm: React.FC = () => {
         );
       })
       .catch((e) => {
-        errorRequestMessage(e.message);
+        errorRequestMessage(e);
       })
       .finally(() => setLoad(false));
   };

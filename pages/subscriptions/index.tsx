@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
 import { useMediaQuery } from "react-responsive";
 import * as cookie from "cookie";
 
@@ -17,6 +17,9 @@ import { IText } from "src/ui/IText";
 import { ModalUpgrade } from "src/components/ModalUpgrade";
 import { NoContentSubscribe } from "src/ui/NoContentSubscribe";
 import { CodeForm } from "src/components/CodeForm";
+import { Loader } from "src/ui/Loader";
+import { errorRequestMessage } from "src/services/toastFunctions";
+import { IToast } from "src/ui/IToast";
 
 const Subscriptions: NextPage = () => {
   const router = useRouter();
@@ -42,14 +45,16 @@ const Subscriptions: NextPage = () => {
   }, [token, router]);
 
   useEffect(() => {
-    dispatch(thunks.subscribes.asyncGetSubscribes({}));
+    dispatch(thunks.subscribes.asyncGetSubscribes({}))
+      .unwrap()
+      .catch((e) => errorRequestMessage(e));
   }, [dispatch]);
 
   return (
     <MainLayout title="Gscore | Subscriptions">
       {loading === "pending" ? (
         <Container containerStyles={noSubscribeContainerStyles}>
-          <IText containerStyles={noSubscribeSubText}>Loading...</IText>
+          <IText containerStyles={noSubscribeSubText}>Loading</IText>
         </Container>
       ) : (
         <>
@@ -72,7 +77,10 @@ const Subscriptions: NextPage = () => {
               <CodeForm />
             </>
           ) : (
-            <NoContentSubscribe />
+            <>
+              <NoContentSubscribe />
+              <IToast />
+            </>
           )}
         </>
       )}
@@ -138,7 +146,34 @@ const noSubscribeContainerStyles = css`
   max-width: 430px;
 `;
 
+const loadAnim = keyframes`
+  0% {
+    content: ' ';
+  }
+
+  33% {
+    content: '.';
+  }
+
+  66% {
+    content: '..';
+  }
+
+  100% {
+    content: '...';
+  }
+`;
+
 const noSubscribeSubText = css`
+  position: relative;
   margin-bottom: 32px;
   text-align: center;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    display: inline-block;
+    animation: ${loadAnim} 1.5s linear infinite;
+  }
 `;

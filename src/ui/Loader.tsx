@@ -1,15 +1,14 @@
-import React from 'react';
-import LoaderIcon from 'src/assets/icons/LoaderIcon';
-import styled, { CSSProp } from 'styled-components';
+import React from "react";
+import LoaderIcon from "src/assets/icons/LoaderIcon";
+import styled, { CSSProp } from "styled-components";
 
 export const Loader: React.FC<LoaderProps> = ({
   color,
   width = 24,
   height = 24,
-  containerStyles = {},
 }) => {
   return (
-    <LoaderContainer $CSS={containerStyles}>
+    <LoaderContainer>
       <LoaderIcon color={color} width={width} height={height} />
     </LoaderContainer>
   );
@@ -22,7 +21,7 @@ interface LoaderProps {
   containerStyles?: CSSProp;
 }
 
-const LoaderContainer = styled.div<{ $CSS?: CSSProp }>`
+const LoaderContainer = styled.div`
   height: 18px;
   display: flex;
   align-items: center;
@@ -34,6 +33,4 @@ const LoaderContainer = styled.div<{ $CSS?: CSSProp }>`
       transform: rotate(360deg);
     }
   }
-
-  ${({ $CSS }) => $CSS}
 `;
