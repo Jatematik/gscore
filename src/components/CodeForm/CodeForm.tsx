@@ -17,8 +17,6 @@ const CodeForm: React.FC = () => {
   const [codesIds, setCodesIds] = useState<number[]>([]);
   const [load, setLoad] = useState<boolean>(false);
 
-  console.log(codes, "codes");
-
   const submit = () => {
     setLoad(true);
 

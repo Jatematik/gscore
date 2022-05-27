@@ -13,12 +13,22 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
     <Container $CSS={containerStyles}>
       <ILabel>
         <CheckboxContainer>
-          <HiddenCheckbox type="checkbox" checked={isChecked} {...props} />
-          <StyledCheckbox checked={isChecked}>
-            <Icon viewBox="0 0 24 24">
+          <input
+            type="checkbox"
+            className="check-input"
+            checked={isChecked}
+            {...props}
+          />
+          <div className="check-styled">
+            <Icon
+              viewBox="0 0 24 24"
+              style={{
+                visibility: isChecked ? "visible" : "hidden",
+              }}
+            >
               <polyline points="20 6 9 17 4 12" />
             </Icon>
-          </StyledCheckbox>
+          </div>
         </CheckboxContainer>
         {label && (
           <IText as="span" containerStyles={labelTextStyles}>
@@ -41,6 +51,12 @@ const Container = styled.div<{ $CSS?: CSSProp }>`
   ${({ $CSS }) => $CSS}
 `;
 
+const Icon = styled.svg`
+  fill: none;
+  stroke: ${colors.white};
+  stroke-width: 2px;
+`;
+
 const ILabel = styled.label`
   display: flex;
   align-items: center;
@@ -54,68 +70,4 @@ const labelTextStyles = css`
 const CheckboxContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
-`;
-
-const Icon = styled.svg`
-  fill: none;
-  stroke: ${colors.white};
-  stroke-width: 2px;
-`;
-
-const HiddenCheckbox = styled.input`
-  border: 0;
-  clip: rect(0 0 0 0);
-  clippath: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-`;
-
-const StyledCheckbox = styled.div<{ checked: boolean | undefined }>`
-  width: 28px;
-  height: 28px;
-  background: ${({ checked }) => (checked ? colors.primary : colors.white)};
-  border: 1px solid
-    ${({ checked }) => (checked ? colors.primary : colors.gray400)};
-  border-radius: 7px;
-  transition: all 150ms;
-
-  ${HiddenCheckbox}:hover + & {
-    background: ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
-    border: 1px solid
-      ${({ checked }) => (checked ? colors.red400 : colors.gray400)};
-  }
-
-  ${HiddenCheckbox}:focus + & {
-    ${({ checked }) =>
-      checked
-        ? css`
-            box-shadow: 0 0 0 4px rgb(252 88 66 / 30%);
-          `
-        : css`
-            box-shadow: 0px 2px 6px rgba(20, 20, 43, 0.06);
-          `}
-  }
-
-  ${HiddenCheckbox}:disabled + & {
-    opacity: 0.5;
-    background: ${({ checked }) => (checked ? colors.red400 : colors.white)};
-    border: 1px solid
-      ${({ checked }) => (checked ? colors.red400 : colors.white)};
-  }
-
-  ${HiddenCheckbox}:hover:disabled + & {
-    opacity: 0.5;
-    background: ${({ checked }) => (checked ? colors.red400 : colors.white)};
-    border: 1px solid
-      ${({ checked }) => (checked ? colors.red400 : colors.white)};
-  }
-
-  ${Icon} {
-    visibility: ${({ checked }) => (checked ? "visible" : "hidden")};
-  }
 `;
