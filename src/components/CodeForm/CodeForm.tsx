@@ -17,6 +17,8 @@ const CodeForm: React.FC = () => {
   const [codesIds, setCodesIds] = useState<number[]>([]);
   const [load, setLoad] = useState<boolean>(false);
 
+  console.log(codes, "codes");
+
   const submit = () => {
     setLoad(true);
 
@@ -27,14 +29,14 @@ const CodeForm: React.FC = () => {
       })
     )
       .unwrap()
-      .then((codes) =>
+      .then((codes) => {
         dispatch(
           actions.subscribes.setCodes({
             id: subscribeCardId,
             codes,
           })
-        )
-      )
+        );
+      })
       .catch((e) => {
         errorRequestMessage(e.message);
       })

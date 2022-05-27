@@ -46,6 +46,10 @@ const codesSlice = createSlice({
         (state, action: PayloadAction<SubscribeCodeProps[]>) => {
           state.codes = action.payload;
         }
+      )
+      .addCase(
+        codesThunks.asyncManageSelfCodes.rejected,
+        (state, action: PayloadAction<any | unknown>) => {}
       );
   },
 });
